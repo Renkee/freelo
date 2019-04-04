@@ -1,4 +1,5 @@
 .history
+.npmrc
 
 # Cypress screenshots and videos
 test/e2e/screenshots

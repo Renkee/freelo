@@ -1,75 +1,70 @@
 <template>
-  <v-layout column justify-center align-center>
-    <v-flex xs12 sm8 md6>
-      <div class="text-xs-center">
-        <!-- eslint-disable-next-line -->
-        <img src="~static/v.png" alt="Vuetify.js" class="mb-5" />
-      </div>
-      <v-card>
-        <v-card-title class="headline">
-          Welcome to the Vuetify + Nuxt.js template
-        </v-card-title>
-        <v-card-text>
-          <app-component />
-          <p>
-            Vuetify is a progressive Material Design component framework for
-            Vue.js. It was designed to empower developers to create amazing
-            applications.
-          </p>
-          <p>
-            For more information on Vuetify, check out the
-            <a href="https://vuetifyjs.com" target="_blank">documentation</a>.
-          </p>
-          <p>
-            If you have questions, please join the official
-            <a href="https://chat.vuetifyjs.com/" target="_blank" title="chat">
-              discord </a
-            >.
-          </p>
-          <p>
-            Find a bug? Report it on the github
-            <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              title="contribute"
-            >
-              issue board </a
-            >.
-          </p>
-          <p>
-            Thank you for developing with Vuetify and I look forward to bringing
-            more exciting features in the future.
-          </p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <!-- eslint-disable-next-line -->
-          <hr class="my-3" />
-          <a href="https://nuxtjs.org/" target="_blank">Nuxt Documentation</a>
-          <!-- eslint-disable-next-line -->
-          <br />
-          <a href="https://github.com/nuxt/nuxt.js" target="_blank">
-            Nuxt GitHub
-          </a>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn color="primary" flat nuxt to="/inspire">Continue</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-flex>
-  </v-layout>
+	<v-layout column justify-center align-center>
+		<v-flex xs12 sm8 md6>
+			<v-card class="pa-1">
+				<v-card-title primary-title class="display-2">
+					Welcome.
+				</v-card-title>
+				<v-card-text class="body-1">
+					<p>
+						Freelo is a tool that helps you develop a framework in your mind with which you can easily reason about
+						League of Legends.
+					</p>
+					<p>If you have any questions, please join OFGSaiph's official <a href="#">discord</a>.</p>
+					<v-subheader class="pl-0">
+						Created by
+					</v-subheader>
+					<v-list two-line>
+						<v-list-tile
+							v-for="person in madeBy"
+							:key="person.name"
+							:href="person.link"
+							target="_blank"
+							ripple
+							avatar
+						>
+							<v-list-tile-avatar>
+								<img :src="person.avatar" />
+							</v-list-tile-avatar>
+							<v-list-tile-content>
+								<v-list-tile-title>
+									{{ person.name }}
+								</v-list-tile-title>
+								<v-list-tile-sub-title>
+									{{ person.text }}
+								</v-list-tile-sub-title>
+							</v-list-tile-content>
+						</v-list-tile>
+					</v-list>
+				</v-card-text>
+				<v-card-actions>
+					<v-spacer />
+					<v-btn color="primary" flat nuxt to="/guides/champions">Start learning</v-btn>
+				</v-card-actions>
+			</v-card>
+		</v-flex>
+	</v-layout>
 </template>
 
 <script>
-import AppComponent from "~/components/Component";
-
 export default {
-  components: {
-    AppComponent
-  },
-  data() {
-    return {};
-  }
-};
+	data() {
+		return {
+			madeBy: [
+				{
+					name: 'OFGSaiph',
+					avatar: '/madeByAvatars/ofgsaiph.png',
+					text: 'Content creator',
+					link: 'https://twitch.tv/ofgsaiph'
+				},
+				{
+					name: 'Renkee',
+					avatar: '/madeByAvatars/renkee.png',
+					text: 'Web developer',
+					link: 'https://renkee.eu'
+				}
+			]
+		}
+	}
+}
 </script>

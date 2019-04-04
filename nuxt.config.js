@@ -9,7 +9,7 @@ export default {
   // https://nuxtjs.org/api/configuration-head
   head: {
     titleTemplate: title =>
-      title ? `${title} - Nuxt PWA Vuetify` : "Nuxt PWA Vuetify",
+      title ? `${title} - Freelo` : "Freelo",
     meta: [
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
