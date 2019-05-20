@@ -7,9 +7,13 @@
 				</v-card-title>
 				<v-card-text class="body-1">
 					<p>
-						Freelo is a compilation of guides and tips made by OFGSaiph. You can use them to get better not only at League of Legends, but thinking in general.
+						Freelo is a compilation of guides and tips made by OFGSaiph. You can use them to get better not only at
+						League of Legends, but thinking in general.
 					</p>
-					<p>If you have any questions, please join OFGSaiph's official <a href="https://discord.gg/pg53scv">discord</a>.</p>
+					<p>
+						If you have any questions, please join OFGSaiph's official
+						<a href="https://discord.gg/pg53scv">discord</a>.
+					</p>
 					<v-subheader class="pl-0">
 						Created by
 					</v-subheader>

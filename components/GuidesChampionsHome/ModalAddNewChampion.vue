@@ -105,6 +105,9 @@ export default {
 		disableModal() {
 			this.$emit('showModal', false)
 		},
+		getIndexFromRole(role) {
+			return ['top', 'jungle', 'middle', 'bottom', 'support'].indexOf(role)
+		},
 		async submitAddChampionModal() {
 			this.addChampionButtonLoading = true
 			if (await this.$validator.validateAll()) {
@@ -112,6 +115,9 @@ export default {
 					return champ.name === this.addChampion.name
 				})
 				const { roles, power } = this.addChampion
+				roles.sort((a, b) => {
+					return this.getIndexFromRole(a) > this.getIndexFromRole(b) ? 1 : -1
+				})
 				const payload = { _id: champion.mongo_id, toBeChanged: { freelo: true, roles, power } }
 
 				await this.$store.dispatch('champions/changeGeneralChampionData', payload)

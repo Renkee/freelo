@@ -1,11 +1,11 @@
 <template>
-	<div>
+	<div style="display: flex; flex-flow: row wrap; justify-content: center">
 		<v-card
 			v-for="champion in champions"
 			:key="champion.name"
 			tag="article"
 			class="card ma-2"
-			style="display: inline-block"
+			style="display: inline-block; flex: none"
 			:width="225"
 			@mouseover="hovered.push(champion.name)"
 			@mouseleave="

@@ -96,7 +96,7 @@ export default {
 			roles: ['top', 'jungle', 'middle', 'bottom', 'support'],
 			roleSwitch: [],
 			filteredRole: '',
-			drawerNav: this.$route.name === 'index',
+			drawerNav: false,
 			drawerFilter: false,
 			guides: [
 				{
