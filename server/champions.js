@@ -1,7 +1,7 @@
 const express = require('express')
 const axios = require('axios')
 const path = require('path')
-const Champion = require(path.join(__dirname, "\\models\\Champion.js"))
+const Champion = require(path.join(__dirname, "/models/Champion.js"))
 
 const router = express.Router()
 
