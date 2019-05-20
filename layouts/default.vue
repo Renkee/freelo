@@ -6,7 +6,12 @@
 				<v-icon style="float: right" :size="24" @click="drawerFilter = !drawerFilter">close</v-icon>
 			</div>
 			<v-divider></v-divider>
-			<v-text-field class="mx-4 mt-1" label="Search by name"></v-text-field>
+			<v-text-field
+				clearable
+				class="mx-4 mt-1"
+				label="Search by name"
+				@input="$store.commit('filters/setChampionNameFilter', $event)"
+			></v-text-field>
 			<v-divider></v-divider>
 			<div class="ma-3">
 				<v-expansion-panel v-model="roleSwitch">
@@ -24,6 +29,7 @@
 										color="primary"
 										:label="role"
 										:value="role"
+										@change="$store.commit('filters/setChampionRoleFilter', $event)"
 									></v-radio>
 								</v-radio-group>
 							</v-card-text>
@@ -119,15 +125,21 @@ export default {
 			if (val !== 'guides-champions') {
 				this.drawerFilter = false
 			}
+		},
+		roleSwitch() {
+			this.$store.commit('filters/setChampionRoleFilterSwitch', this.roleSwitch !== null)
 		}
 	},
 	methods: {
 		toggleDarkMode() {
 			this.isDark = !this.isDark
-			this.isDark ? (this.$vuetify.theme.primary = '#388E3C') : (this.$vuetify.theme.primary = '#3F51B5')
+			this.isDark ? (this.$vuetify.theme.primary = '#0288D1') : (this.$vuetify.theme.primary = '#3F51B5')
 		},
 		getAssetByRole(role) {
 			return '/roleImgs/' + role + '.png'
+		},
+		onChange(e) {
+			console.log(e) //eslint-disable-line
 		}
 	}
 }

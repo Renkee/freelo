@@ -1,25 +1,11 @@
-export const types = {
-	SET_EXAMPLE_STATE: 'SET_EXAMPLE_STATE'
-}
-
-export const state = () => ({
-	exampleState: null
-})
-
-export const getters = {
-	getExampleState(state) {
-		return state.exampleState
-	}
-}
-
-export const mutations = {
-	[types.SET_EXAMPLE_STATE](state, payload) {
-		state.exampleState = payload
-	}
-}
-
+/* eslint-disable */
 export const actions = {
-	[types.SET_EXAMPLE_STATE]({ commit }, payload) {
-		commit(types.SET_EXAMPLE_STATE, payload)
+	async nuxtServerInit({ dispatch }) {
+		// Get required information for website
+		await dispatch('api/getCurrentPatch') // League API patch number
+		await dispatch('champions/getChampionInfoFromServer')
+		await dispatch('champions/getCombinedChampionInfo')
+		await dispatch('items/getItemsFromRiotGamesAPI')
+
 	}
 }

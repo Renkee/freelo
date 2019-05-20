@@ -4,7 +4,9 @@ require("dotenv").config();
 
 export default {
   // https://nuxtjs.org/api/configuration-modern
+  mode: 'universal',
   modern: true,
+  serverMiddleware: ['~/server/index.js'],
 
   // https://nuxtjs.org/api/configuration-head
   head: {
@@ -19,6 +21,8 @@ export default {
 
   // https://nuxtjs.org/api/configuration-modules
   modules: [
+    "vue-scrollto/nuxt",
+
     // https://axios.nuxtjs.org/
     "@nuxtjs/axios",
 
@@ -49,6 +53,17 @@ export default {
     //   }
     // ]
   ],
+
+
+  manifest: {
+		name: "Freelo",
+		short_name: "Freelo",
+		theme_color: "#3F51B5",
+		background_color: "#FAFAFA",
+		display: "standalone",
+		scope: "/",
+		start_url: "/"
+	},
 
   webfontloader: {
     google: {
