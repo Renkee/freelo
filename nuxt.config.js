@@ -8,7 +8,7 @@ export default {
   modern: true,
   serverMiddleware: ['~/server/index.js'],
   env: {
-    baseUrl: process.env.BASE_URL || 'http://localhost:3000'
+    baseUrl: process.env.BASE_URL
   },
 
   // https://nuxtjs.org/api/configuration-head
