@@ -7,8 +7,12 @@ export default {
   mode: 'universal',
   modern: true,
   serverMiddleware: ['~/server/index.js'],
+  server: {
+    port: process.env.PORT, // default: 3000
+    host: process.env.HOST // default: localhost
+  },
   env: {
-    baseUrl: process.env.BASE_URL
+    baseUrl: process.env.BASE_URL || 'http://localhost:3000'
   },
 
   // https://nuxtjs.org/api/configuration-head
