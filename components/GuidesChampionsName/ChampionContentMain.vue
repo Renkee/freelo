@@ -512,7 +512,7 @@ export default {
 						propsData: {
 							name: name,
 							imageLink:
-								'http://ddragon.leagueoflegends.com/cdn/' + currentPatch + '/img/item/' + maybeItem[0].image.full
+								'https://ddragon.leagueoflegends.com/cdn/' + currentPatch + '/img/item/' + maybeItem[0].image.full
 						}
 					})
 				}
