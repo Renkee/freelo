@@ -75,7 +75,7 @@ export const actions = {
 				contents: champions[i].contents,
 				roles: champions[i].roles,
 				power: champions[i].power,
-				splash: '//ddragon.leagueoflegends.com/cdn/img/champion/tiles/' + champions[i].api_name + '_0.jpg'
+				splash: 'https://ddragon.leagueoflegends.com/cdn/img/champion/tiles/' + champions[i].api_name + '_0.jpg'
 			}
 		}
 

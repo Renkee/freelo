@@ -498,7 +498,7 @@ export default {
 							propsData: {
 								name: champion.name,
 								imageLink:
-									'http://ddragon.leagueoflegends.com/cdn/' +
+									'https://ddragon.leagueoflegends.com/cdn/' +
 									currentPatch +
 									'/img/champion/' +
 									champion.api_name +
