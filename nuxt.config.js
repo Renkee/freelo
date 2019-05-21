@@ -11,9 +11,6 @@ export default {
     port: process.env.PORT, // default: 3000
     host: process.env.HOST // default: localhost
   },
-  env: {
-    baseUrl: process.env.BASE_URL || 'http://localhost:3000'
-  },
 
   // https://nuxtjs.org/api/configuration-head
   head: {
@@ -60,6 +57,11 @@ export default {
     //   }
     // ]
   ],
+  axios: {
+    API_HOST: process.env.API_HOST,
+    API_PORT: process.env.API_PORT,
+
+  },
 
 
   manifest: {
