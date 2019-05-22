@@ -57,12 +57,7 @@
 						>
 					</div>
 					<div style="margin: -4px; margin-top: 12px">
-						<v-chip class="error" disabled>
-							<v-avatar>
-								<v-icon small class="white error--text">fas fa-fist-raised</v-icon>
-							</v-avatar>
-							<span class="white--text">{{ champion.power[0] }} - {{ champion.power[1] }}</span>
-						</v-chip>
+						<ChampionPower :power="champion.power"></ChampionPower>
 					</div>
 					<div v-if="loggedIn">
 						<v-btn flat dark style="position: absolute; bottom: 0px; right: 0px" @click="startHeaderEdit()"
@@ -76,7 +71,12 @@
 </template>
 
 <script>
+import ChampionPower from '~/components/General/ChampionPower'
+
 export default {
+	components: {
+		ChampionPower
+	},
 	props: {
 		champion: {
 			type: Object,

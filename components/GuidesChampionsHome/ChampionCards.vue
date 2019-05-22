@@ -48,19 +48,7 @@
 				</v-card-title>
 			</header>
 			<v-card-actions>
-				<v-tooltip color="error" bottom>
-					<template v-slot:activator="{ on }">
-						<div class="text-xs-center" v-on="on">
-							<v-chip class="error" disabled>
-								<v-avatar>
-									<v-icon small class="white error--text">fas fa-fist-raised</v-icon>
-								</v-avatar>
-								<span class="white--text">{{ champion.power[0] }} - {{ champion.power[1] }}</span>
-							</v-chip>
-						</div>
-					</template>
-					<span>{{ championPowerExplanation }} </span>
-				</v-tooltip>
+				<ChampionPower :power="champion.power"></ChampionPower>
 				<v-spacer></v-spacer>
 				<v-btn flat nuxt :to="'champions/' + champion.name" class="primary--text">Details</v-btn>
 			</v-card-actions>
@@ -91,7 +79,12 @@
 </template>
 
 <script>
+import ChampionPower from '~/components/General/ChampionPower'
+
 export default {
+	components: {
+		ChampionPower
+	},
 	props: {
 		loggedIn: {
 			type: Boolean,
@@ -105,9 +98,7 @@ export default {
 	data() {
 		return {
 			hovered: [],
-			deleteDialogs: [],
-			championPowerExplanation:
-				"Champion Power: This range represents the extremes of each champion's possible influence/impact over a game."
+			deleteDialogs: []
 		}
 	},
 	methods: {
