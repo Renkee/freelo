@@ -75,12 +75,6 @@
 
 <script>
 export default {
-	props: {
-		showModal: {
-			type: Boolean,
-			required: true
-		}
-	},
 	data() {
 		return {
 			addChampion: {
@@ -92,6 +86,9 @@ export default {
 		}
 	},
 	computed: {
+		showModal() {
+			return this.$store.getters['championmodals/getNewChampionModalState']
+		},
 		notFreeloChampions() {
 			return this.$store.getters['champions/getNotFreeloChampions']
 		},
@@ -103,7 +100,7 @@ export default {
 	},
 	methods: {
 		disableModal() {
-			this.$emit('showModal', false)
+			this.$store.commit('championmodals/setNewChampionModalState', false)
 		},
 		getIndexFromRole(role) {
 			return ['top', 'jungle', 'middle', 'bottom', 'support'].indexOf(role)

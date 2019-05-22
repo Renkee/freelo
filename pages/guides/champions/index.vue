@@ -2,8 +2,9 @@
 	<div id="champ-container">
 		<ChampionCards :logged-in="loggedIn" :champions="filteredChampions"></ChampionCards>
 		<div v-if="loggedIn">
-			<AddFab v-if="loggedIn" @fabClicked="showModal = true"></AddFab>
-			<ModalAddNewChampion :show-modal="showModal" @showModal="showModal = $event"></ModalAddNewChampion>
+			<AddFab v-if="loggedIn" @fabClicked="$store.commit('championmodals/setNewChampionModalState', true)"></AddFab>
+			<ModalRemoveChampion></ModalRemoveChampion>
+			<ModalAddNewChampion></ModalAddNewChampion>
 		</div>
 	</div>
 </template>
@@ -12,11 +13,13 @@
 import ChampionCards from '~/components/GuidesChampionsHome/ChampionCards'
 import AddFab from '~/components/General/AddFab'
 import ModalAddNewChampion from '~/components/GuidesChampionsHome/ModalAddNewChampion'
+import ModalRemoveChampion from '~/components/GuidesChampionsHome/ModalRemoveChampion'
 
 export default {
 	components: {
 		ChampionCards,
 		ModalAddNewChampion,
+		ModalRemoveChampion,
 		AddFab
 	},
 	data() {

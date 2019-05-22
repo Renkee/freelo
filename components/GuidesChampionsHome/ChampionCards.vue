@@ -19,7 +19,7 @@
 					v-if="loggedIn && hovered.includes(champion.name)"
 					style="position: absolute; top: 0; left: 0; z-index: 10000"
 				>
-					<v-btn round color="error" small @click.stop="$set(deleteDialogs, champion.mongo_id, true)">Remove</v-btn>
+					<v-btn round color="error" small @click.stop="enableRemoveModal(champion)">Remove</v-btn>
 				</div>
 			</transition>
 			<v-img :height="200" :src="champion.splash">
@@ -52,28 +52,6 @@
 				<v-spacer></v-spacer>
 				<v-btn flat nuxt :to="'champions/' + champion.name" class="primary--text">Details</v-btn>
 			</v-card-actions>
-			<v-dialog v-model="deleteDialogs[champion.mongo_id]" max-width="350">
-				<v-card>
-					<v-card-title class="headline pb-1">Are you sure?</v-card-title>
-					<v-card-actions>
-						<v-spacer></v-spacer>
-
-						<v-btn
-							color="error"
-							@click="
-								$set(deleteDialogs, champion.mongo_id, false)
-								removeChampion(champion.mongo_id)
-							"
-						>
-							Delete
-						</v-btn>
-
-						<v-btn flat @click="$set(deleteDialogs, champion.mongo_id, false)">
-							Close
-						</v-btn>
-					</v-card-actions>
-				</v-card>
-			</v-dialog>
 		</v-card>
 	</div>
 </template>
@@ -97,20 +75,13 @@ export default {
 	},
 	data() {
 		return {
-			hovered: [],
-			deleteDialogs: []
+			hovered: []
 		}
 	},
 	methods: {
-		async removeChampion(_id) {
-			this.$store.dispatch('champions/changeGeneralChampionData', {
-				_id,
-				toBeChanged: { freelo: false }
-			})
-			await this.$store.dispatch('champions/changeGeneralChampionDataOnServer', {
-				_id,
-				toBeChanged: { freelo: false }
-			})
+		enableRemoveModal(champion) {
+			this.$store.commit('championmodals/setRemoveChampionModalChampion', champion)
+			this.$store.commit('championmodals/setRemoveChampionModalState', true)
 		}
 	}
 }
