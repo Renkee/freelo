@@ -526,7 +526,11 @@ export default {
 					element.outerHTML +
 					splitText.slice(startingPoint, splitText.length).join('')
 			})
-			return text
+			return text.replace(/<div>/g, `<div>
+
+`).replace(/<\/div>/g, `
+
+</div>`)
 		},
 		replaceWithNameTags(text) {
 			if (this.nameTagsEnabled) {
