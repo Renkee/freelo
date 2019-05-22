@@ -526,7 +526,7 @@ export default {
 					element.outerHTML +
 					splitText.slice(startingPoint, splitText.length).join('')
 			})
-			return '<div>' + text + '</div>'
+			return text
 		},
 		replaceWithNameTags(text) {
 			if (this.nameTagsEnabled) {
