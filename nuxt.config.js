@@ -60,6 +60,7 @@ export default {
   axios: {
     API_HOST: process.env.API_HOST,
     API_PORT: process.env.API_PORT,
+    HTTPS: process.env.HTTPS_ENABLED
 
   },
 
