@@ -4,8 +4,8 @@
 			v-for="champion in champions"
 			:key="champion.name"
 			tag="article"
-			class="card ma-2"
-			style="display: inline-block; flex: none"
+			class="card ma-2 champion-card"
+			style="display: inline-block; min-width: 225px"
 			:width="225"
 			@mouseover="hovered.push(champion.name)"
 			@mouseleave="
@@ -96,6 +96,17 @@ export default {
 .fade-leave-to {
 	opacity: 0;
 }
+
+.champion-card {
+	flex: none;
+}
+
+@media (max-width: 530px) {
+	.champion-card {
+		flex: 1 !important;
+	}
+}
+
 .roles-wrapper {
 	height: 100%;
 	width: 100%;
