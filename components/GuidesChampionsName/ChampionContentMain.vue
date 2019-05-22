@@ -526,11 +526,7 @@ export default {
 					element.outerHTML +
 					splitText.slice(startingPoint, splitText.length).join('')
 			})
-			return text.replace(/<div>/g, `<div>
-
-`).replace(/<\/div>/g, `
-
-</div>`)
+			return text.replace(/div/g, 'span') // have to remove block elements because markdown doesn't like them
 		},
 		replaceWithNameTags(text) {
 			if (this.nameTagsEnabled) {
