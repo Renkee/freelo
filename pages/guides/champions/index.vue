@@ -2,7 +2,10 @@
 	<div id="champ-container">
 		<ChampionCards :logged-in="loggedIn" :champions="filteredChampions"></ChampionCards>
 		<div v-if="loggedIn">
-			<AddFab v-if="loggedIn" @fabClicked="$store.commit('championmodals/setNewChampionModalState', true)"></AddFab>
+			<AddFab
+				v-if="loggedIn && $store.getters['championmodals/getNewChampionModalState'] === false"
+				@fabClicked="$store.commit('championmodals/setNewChampionModalState', true)"
+			></AddFab>
 			<ModalRemoveChampion></ModalRemoveChampion>
 			<ModalAddNewChampion></ModalAddNewChampion>
 		</div>
