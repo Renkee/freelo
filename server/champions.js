@@ -88,8 +88,7 @@ router.patch('/:_id/:contentID', async (req, res) => {
 })
 
 router.delete('/:_id', async (req, res) => {
-	console.log('removing champion')
-	if(req.body.contentID) {
+	if(req.body.contentID !== undefined) {
 		try {
 			let champion = await Champion.findById(req.params._id)
 
@@ -100,6 +99,8 @@ router.delete('/:_id', async (req, res) => {
 		} catch (err) {
 			res.json(err)
 		}
+	} else {
+		res.json({msg: 'Nothing to do'})
 	}
 })
 
