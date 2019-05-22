@@ -409,8 +409,8 @@ export default {
 
 			this.$store.commit('championguides/removeItemByIdFromContentCreated', id)
 		},
-		deleteContent(id, delOrCan) {
-			this.$store.dispatch('champions/deleteContentInChampion', {
+		async deleteContent(id, delOrCan) {
+			await this.$store.dispatch('champions/deleteContentInChampion', {
 				_id: this.champion.mongo_id,
 				contentID: id
 			})
