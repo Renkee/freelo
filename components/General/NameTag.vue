@@ -34,8 +34,8 @@ a {
 	margin-right: -12px;
 }
 .champion-tag img {
-	height: 1.4rem;
-	width: 1.4rem;
+	height: 1.4rem !important;
+	width: 1.4rem !important;
 	margin-right: 5px !important;
 	margin-bottom: 1px !important;
 	margin-top: -2px !important;
