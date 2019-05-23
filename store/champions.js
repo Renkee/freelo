@@ -129,7 +129,7 @@ export const actions = {
 	async deleteContentInChampion({commit, getters}, {_id, contentID}) {
 		let champion = getters['getChampionByID'](_id)
 		commit('deleteContentInChampion', {contents: champion.contents, contentID})
-		await this.$axios.$delete('api/champions/' + _id, {
+		await this.$axios.$delete('https://freelo.renkee.eu/api/champions/' + _id, {
 			data: {
 				contentID
 			}
