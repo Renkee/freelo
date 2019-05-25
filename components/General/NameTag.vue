@@ -1,7 +1,7 @@
 <template>
 	<v-chip class="champion-tag white--text" disabled small color="primary">
 		<a rel="noopener" title="Wiki page" :href="'https://leagueoflegends.fandom.com/wiki/' + name" target="_blank">
-			<v-avatar><img :src="imageLink"/></v-avatar>
+			<v-avatar><img alt="" :src="imageLink"/></v-avatar>
 			<span class="champion-tag-text">{{ name }}</span>
 		</a>
 	</v-chip>

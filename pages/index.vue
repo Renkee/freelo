@@ -28,7 +28,7 @@
 							avatar
 						>
 							<v-list-tile-avatar>
-								<img :src="person.avatar" />
+								<img alt="" :src="person.avatar" />
 							</v-list-tile-avatar>
 							<v-list-tile-content>
 								<v-list-tile-title>
