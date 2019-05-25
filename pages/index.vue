@@ -21,6 +21,7 @@
 						<v-list-tile
 							v-for="person in madeBy"
 							:key="person.name"
+							rel="noopener"
 							:href="person.link"
 							target="_blank"
 							ripple
