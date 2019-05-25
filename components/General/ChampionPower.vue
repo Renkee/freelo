@@ -1,5 +1,5 @@
 <template>
-	<v-tooltip color="error" bottom>
+	<v-tooltip color="red" bottom>
 		<template v-slot:activator="{ on }">
 			<div style="display: inline" class="text-xs-center" v-on="on">
 				<v-chip class="red" disabled>
