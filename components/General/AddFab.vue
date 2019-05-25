@@ -1,6 +1,15 @@
 <template>
 	<v-fab-transition>
-		<v-btn v-show="fabToggle" id="addFab" fixed absolute fab color="primary" @click="$emit('fabClicked')">
+		<v-btn
+			v-show="fabToggle"
+			id="addFab"
+			aria-label="Add new"
+			fixed
+			absolute
+			fab
+			color="primary"
+			@click="$emit('fabClicked')"
+		>
 			<v-icon>add</v-icon>
 		</v-btn>
 	</v-fab-transition>

@@ -18,7 +18,7 @@ import ChampionContentMain from '~/components/GuidesChampionsName/ChampionConten
 export default {
 	head() {
 		return {
-			title: `${this.championByRoute.name} champion guide`,
+			title: `${this.championByRoute.name} Champion Guide`,
 			meta: [
 				{
 					name: 'description',

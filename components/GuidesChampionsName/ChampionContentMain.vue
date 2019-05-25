@@ -8,7 +8,7 @@
 			class="content-item"
 			:style="loggedIn ? 'padding-bottom: 52px' : ''"
 		>
-			<div v-if="arrayContainsObjectWithID(contentCreated, content.id).status" id="IF_CREATING">
+			<div v-if="arrayContainsObjectWithID(contentCreated, content.id).status" class="IF_CREATING">
 				<v-tabs centered color="primary" slider-color="#FF9D45" dark @change="onTabChangeWhileCreate(content.id, $event)">
 					<v-tab>Create</v-tab>
 					<v-tab-item>
@@ -62,13 +62,13 @@
 						</v-card>
 					</v-tab-item>
 				</v-tabs>
-				<v-card-actions id="if-logged-in">
+				<v-card-actions class="if-logged-in">
 					<v-spacer></v-spacer>
 					<v-btn color="primary" @click="createContentSubmit(content.id, content.span)">Submit</v-btn>
 					<v-btn flat :ripple="false" @click="deleteContent(index, 'cancel')">Cancel</v-btn>
 				</v-card-actions>
 			</div>
-			<div v-if="arrayContainsObjectWithID(contentEdited, content.id).status" id="IF_EDITING">
+			<div v-if="arrayContainsObjectWithID(contentEdited, content.id).status" class="IF_EDITING">
 				<v-tabs centered color="primary" slider-color="#FF9D45" dark @change="onTabChangeWhileEdit(content.id, $event)">
 					<v-tab>Edit</v-tab>
 					<v-tab-item>
@@ -125,7 +125,7 @@
 						</v-card>
 					</v-tab-item>
 				</v-tabs>
-				<v-card-actions id="if-logged-in">
+				<v-card-actions class="if-logged-in">
 					<v-spacer></v-spacer>
 					<v-btn color="primary" @click="submitEdit(content.id, content.span)">Submit</v-btn>
 					<v-btn flat :ripple="false" @click="cancelEdit(content.id)">Cancel</v-btn>
@@ -136,7 +136,7 @@
 					!arrayContainsObjectWithID(contentEdited, content.id).status &&
 						!arrayContainsObjectWithID(contentCreated, content.id).status
 				"
-				id="IF_NOT_EDITING"
+				class="IF_NOT_EDITING"
 			>
 				<v-card-title>
 					<span class="headline">{{ content.title }}</span>
@@ -151,7 +151,7 @@
 						"
 					/>
 				</v-card-text>
-				<v-card-actions v-if="loggedIn" id="if-logged-in">
+				<v-card-actions v-if="loggedIn" class="if-logged-in">
 					<v-btn flat small @click="startEdit(content)">Edit</v-btn>
 					<v-btn flat small @click.stop="$set(deleteDialogs, index, true)">Delete</v-btn>
 
@@ -565,7 +565,7 @@ export default {
 </script>
 
 <style scoped>
-#if-logged-in {
+.if-logged-in {
 	position: absolute;
 	bottom: 0;
 	right: 0;

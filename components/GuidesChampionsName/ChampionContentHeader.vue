@@ -3,12 +3,7 @@
 		<v-card id="header-image">
 			<v-img contain :src="champion.splash"></v-img>
 		</v-card>
-		<v-card
-			id="header-info"
-			style="align-items: center; display: flex; justify-content: center;"
-			class="white--text"
-			:color="arrayContainsObjectWithID(contentEdited, 'header') ? 'white' : 'primary'"
-		>
+		<v-card id="header-info" style="align-items: center; display: flex; justify-content: center;">
 			<v-card-text style="display: flex; justify-items: center; flex-direction: column">
 				<div v-if="arrayContainsObjectWithID(contentEdited, 'header')" id="IF_EDITING_HEADER">
 					<v-select
@@ -50,8 +45,9 @@
 						<v-chip
 							v-for="role in champion.roles"
 							:key="role"
-							class="text-capitalize grey lighten-3 black--text"
+							class="text-capitalize white--text"
 							disabled
+							color="primary"
 							label
 							>{{ role }}</v-chip
 						>
@@ -60,9 +56,7 @@
 						<ChampionPower :power="champion.power"></ChampionPower>
 					</div>
 					<div v-if="loggedIn">
-						<v-btn flat dark style="position: absolute; bottom: 0px; right: 0px" @click="startHeaderEdit()"
-							>Edit</v-btn
-						>
+						<v-btn flat style="position: absolute; bottom: 0px; right: 0px" @click="startHeaderEdit()">Edit</v-btn>
 					</div>
 				</div>
 			</v-card-text>

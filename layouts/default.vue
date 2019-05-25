@@ -40,10 +40,16 @@
 			<v-divider></v-divider>
 		</v-navigation-drawer>
 		<v-toolbar clipped-left clipped-right color="primary" dark fixed app>
-			<v-toolbar-side-icon @click.stop="drawerNav = !drawerNav" />
+			<v-toolbar-side-icon aria-label="Open navigation menu" @click.stop="drawerNav = !drawerNav" />
 			<v-toolbar-title v-text="title" />
 			<v-spacer />
-			<v-btn v-if="this.$route.name === 'guides-champions'" icon flat @click.stop="drawerFilter = !drawerFilter">
+			<v-btn
+				v-if="this.$route.name === 'guides-champions'"
+				aria-label="Open filter menu"
+				icon
+				flat
+				@click.stop="drawerFilter = !drawerFilter"
+			>
 				<v-icon>filter_list</v-icon>
 			</v-btn>
 
@@ -133,7 +139,7 @@ export default {
 	methods: {
 		toggleDarkMode() {
 			this.isDark = !this.isDark
-			this.isDark ? (this.$vuetify.theme.primary = '#0288D1') : (this.$vuetify.theme.primary = '#3F51B5')
+			this.isDark ? (this.$vuetify.theme.primary = '#616161') : (this.$vuetify.theme.primary = '#3F51B5')
 		},
 		getAssetByRole(role) {
 			return '/roleImgs/' + role + '.png'

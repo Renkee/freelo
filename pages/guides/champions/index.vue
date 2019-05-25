@@ -21,7 +21,7 @@ import ModalRemoveChampion from '~/components/GuidesChampionsHome/ModalRemoveCha
 export default {
 	head() {
 		return {
-			title: 'Champion guides',
+			title: 'Champion Guides',
 			meta: [
 				{
 					name: 'description',

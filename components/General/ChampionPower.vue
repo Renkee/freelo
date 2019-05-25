@@ -2,9 +2,9 @@
 	<v-tooltip color="error" bottom>
 		<template v-slot:activator="{ on }">
 			<div style="display: inline" class="text-xs-center" v-on="on">
-				<v-chip class="error" disabled>
+				<v-chip class="red" disabled>
 					<v-avatar>
-						<v-icon small class="white error--text">fas fa-fist-raised</v-icon>
+						<v-icon small class="white red--text">fas fa-fist-raised</v-icon>
 					</v-avatar>
 					<span class="white--text">{{ power[0] }} - {{ power[1] }}</span>
 				</v-chip>

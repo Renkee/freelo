@@ -50,7 +50,7 @@
 			<v-card-actions>
 				<ChampionPower :power="champion.power"></ChampionPower>
 				<v-spacer></v-spacer>
-				<v-btn flat nuxt :to="'champions/' + champion.name" class="primary--text">Details</v-btn>
+				<v-btn flat nuxt :to="'champions/' + champion.name">Details</v-btn>
 			</v-card-actions>
 		</v-card>
 	</div>

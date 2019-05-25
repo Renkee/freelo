@@ -7,6 +7,7 @@
 					champion.contents[index - 1] &&
 					champion.contents[index - 1].span === 1
 			"
+			aria-label="Move content"
 			flat
 			icon
 			@click="swapContent(index, -1)"
@@ -20,6 +21,7 @@
 					champion.contents[index - 1] &&
 					champion.contents[index - 1].span === 2
 			"
+			aria-label="Move content"
 			flat
 			icon
 			@click="swapContent(index, -1)"
@@ -28,6 +30,7 @@
 		</v-btn>
 		<v-btn
 			v-if="arrowCalculationsArray[index] % 2 === 0 && content.span === 1 && index < champion.contents.length - 1"
+			aria-label="Move content"
 			flat
 			icon
 			@click="swapContent(index, 1)"
@@ -36,6 +39,7 @@
 		</v-btn>
 		<v-btn
 			v-if="arrowCalculationsArray[index] % 2 === 0 && content.span === 2 && index > 0"
+			aria-label="Move content"
 			flat
 			icon
 			@click="swapContent(index, -1)"
@@ -44,6 +48,7 @@
 		</v-btn>
 		<v-btn
 			v-if="arrowCalculationsArray[index] % 2 === 0 && content.span === 2 && index < champion.contents.length - 1"
+			aria-label="Move content"
 			flat
 			icon
 			@click="swapContent(index, 1)"
@@ -52,6 +57,7 @@
 		</v-btn>
 		<v-btn
 			v-if="arrowCalculationsArray[index] % 2 === 1 && content.span === 1 && index > 0"
+			aria-label="Move content"
 			flat
 			icon
 			@click="swapContent(index, -1)"
@@ -66,6 +72,7 @@
 					champion.contents[index + 1] &&
 					champion.contents[index + 1].span === 1
 			"
+			aria-label="Move content"
 			flat
 			icon
 			@click="swapContent(index, 1)"
@@ -80,6 +87,7 @@
 					champion.contents[index + 1] &&
 					champion.contents[index + 1].span === 2
 			"
+			aria-label="Move content"
 			flat
 			icon
 			@click="swapContent(index, 1)"
@@ -88,6 +96,7 @@
 		</v-btn>
 		<v-btn
 			v-if="arrowCalculationsArray[index] % 2 === 1 && content.span === 2 && index > 0"
+			aria-label="Move content"
 			flat
 			icon
 			@click="swapContent(index, -1)"
@@ -96,6 +105,7 @@
 		</v-btn>
 		<v-btn
 			v-if="arrowCalculationsArray[index] % 2 === 1 && content.span === 2 && index < champion.contents.length - 1"
+			aria-label="Move content"
 			flat
 			icon
 			@click="swapContent(index, 1)"
