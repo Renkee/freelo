@@ -52,6 +52,14 @@
 
 <script>
 export default {
+	head() {
+		return {
+			title: 'Welcome',
+			meta: [
+				{ name: 'description', content: 'Learn about League of Legends with guides made by former C9 coach: OFGSaiph' }
+			]
+		}
+	},
 	data() {
 		return {
 			madeBy: [

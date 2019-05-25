@@ -19,6 +19,17 @@ import ModalAddNewChampion from '~/components/GuidesChampionsHome/ModalAddNewCha
 import ModalRemoveChampion from '~/components/GuidesChampionsHome/ModalRemoveChampion'
 
 export default {
+	head() {
+		return {
+			title: 'Champion guides',
+			meta: [
+				{
+					name: 'description',
+					content: 'See all the guides about League of Legends champions made by former C9 coach: OFGSaiph'
+				}
+			]
+		}
+	},
 	components: {
 		ChampionCards,
 		ModalAddNewChampion,

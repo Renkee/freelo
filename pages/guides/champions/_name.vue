@@ -16,6 +16,17 @@ import ChampionContentHeader from '~/components/GuidesChampionsName/ChampionCont
 import ChampionContentMain from '~/components/GuidesChampionsName/ChampionContentMain'
 
 export default {
+	head() {
+		return {
+			title: `${this.championByRoute.name} champion guide`,
+			meta: [
+				{
+					name: 'description',
+					content: `Learn about ${this.championByRoute.name} with this guide made by former C9 coach: OFGSaiph`
+				}
+			]
+		}
+	},
 	components: {
 		ChampionContentHeader,
 		ChampionContentMain
