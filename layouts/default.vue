@@ -47,9 +47,9 @@
 				<v-icon>filter_list</v-icon>
 			</v-btn>
 
-			<v-btn flat icon @click="toggleDarkMode">
-				<v-icon v-if="isDark" aria-label="Switch to light color scheme" :size="20">fas fa-moon</v-icon>
-				<v-icon v-else aria-label="Switch to dark color scheme" :size="20">fas fa-sun</v-icon>
+			<v-btn aria-label="Toggle dark mode" flat icon @click="toggleDarkMode">
+				<v-icon v-if="isDark" :size="20">fas fa-moon</v-icon>
+				<v-icon v-else :size="20">fas fa-sun</v-icon>
 			</v-btn>
 		</v-toolbar>
 		<v-navigation-drawer v-model="drawerNav" :disable-resize-watcher="true" :clipped="true" fixed app>
