@@ -6,10 +6,6 @@
 					Welcome.
 				</v-card-title>
 				<v-card-text class="body-1">
-					<form method="post" @submit.prevent="logout">
-						<input type="submit" value="Log out" />
-					</form>
-
 					<p>
 						Freelo is a compilation of guides and tips made by OFGSaiph. You can use them to get better not only at
 						League of Legends, but thinking in general.

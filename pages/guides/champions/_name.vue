@@ -31,12 +31,10 @@ export default {
 		ChampionContentHeader,
 		ChampionContentMain
 	},
-	data() {
-		return {
-			loggedIn: true
-		}
-	},
 	computed: {
+		loggedIn() {
+			return this.$store.getters['user/getUser'].id !== null
+		},
 		championByRoute() {
 			const freelo = this.$store.getters['champions/getFreeloChampions']
 			const name = this.$route.params.name
