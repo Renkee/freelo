@@ -38,11 +38,13 @@ export default {
 	},
 	data() {
 		return {
-			loggedIn: true,
 			showModal: false
 		}
 	},
 	computed: {
+		loggedIn() {
+			return this.$store.getters['user/getUser'].id !== null
+		},
 		freeloChampions() {
 			return this.$store.getters['champions/getFreeloChampions']
 		},

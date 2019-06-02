@@ -244,6 +244,9 @@ export default {
 		},
 		allNameTagPossibilites() {
 			return this.allChampions.concat(this.lolItems)
+		},
+		csrfToken() {
+			return this.$store.getters['csrf/getCSRFToken']
 		}
 	},
 	created() {
@@ -370,6 +373,7 @@ export default {
 
 			this.$store.dispatch('champions/updateChampionContentInDatabase', {
 				_id: this.champion.mongo_id,
+				_csrf: this.csrfToken,
 				contentID: id,
 				...stateWhileEdit,
 				span
@@ -399,6 +403,7 @@ export default {
 
 			this.$store.dispatch('champions/createContentOfChampionWithIDInDatabase', {
 				_id: this.champion.mongo_id,
+				_csrf: this.csrfToken,
 				contentID: id,
 				...stateWhileEdit,
 				span
@@ -412,6 +417,7 @@ export default {
 		async deleteContent(id, delOrCan) {
 			await this.$store.dispatch('champions/deleteContentInChampion', {
 				_id: this.champion.mongo_id,
+				_csrf: this.csrfToken,
 				contentID: id
 			})
 

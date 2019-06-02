@@ -96,6 +96,9 @@ export default {
 			return this.notFreeloChampions.map(champ => {
 				return champ.name
 			})
+		},
+		csrfToken() {
+			return this.$store.getters['csrf/getCSRFToken']
 		}
 	},
 	methods: {
@@ -118,7 +121,7 @@ export default {
 				const payload = { _id: champion.mongo_id, toBeChanged: { freelo: true, roles, power } }
 
 				await this.$store.dispatch('champions/changeGeneralChampionData', payload)
-				await this.$store.dispatch('champions/changeGeneralChampionDataOnServer', payload)
+				await this.$store.dispatch('champions/changeGeneralChampionDataOnServer', { _csrf: this.csrfToken, ...payload })
 				this.disableModal()
 
 				// Reset modal items

@@ -85,18 +85,20 @@ export const actions = {
 		let oldContent = getters['getChampionContentByIDs'](championID, contentID)
 		commit('setContentPropertyOfChampionByID', {oldContent, newContent})
 	},
-	async swapContentOfChampionByIndexAndDirection({commit, getters}, {_id, index, dir}) {
+	async swapContentOfChampionByIndexAndDirection({commit, getters}, {_id, _csrf, index, dir}) {
 		let champion = getters['getChampionByID'](_id)
 		commit('swapContentOfChampionByIndexAndDirection', {contents: champion.contents, index, dir})
 		await this.$axios.$patch('api/champions/' + _id, {
+			_csrf,
 			swapContent: {
 				index,
 				dir
 			}
 		})
 	},
-	async updateChampionContentInDatabase(context, {_id, contentID, title, text, span}) {
+	async updateChampionContentInDatabase(context, {_id, _csrf, contentID, title, text, span}) {
 		await this.$axios.$patch('api/champions/' + _id + '/' + contentID, {
+			_csrf,
 			content: {
 				title,
 				text,
@@ -116,8 +118,9 @@ export const actions = {
 			}
 		})
 	},
-	async createContentOfChampionWithIDInDatabase({getters}, {_id, contentID, title, text, span}) {
+	async createContentOfChampionWithIDInDatabase({getters}, {_id, _csrf, contentID, title, text, span}) {
 		await this.$axios.$put('api/champions/' + _id, {
+			_csrf,
 			content: {
 				contentID,
 				title,
@@ -126,11 +129,12 @@ export const actions = {
 			}
 		})
 	},
-	async deleteContentInChampion({commit, getters}, {_id, contentID}) {
+	async deleteContentInChampion({commit, getters}, {_id, _csrf, contentID}) {
 		let champion = getters['getChampionByID'](_id)
 		commit('deleteContentInChampion', {contents: champion.contents, contentID})
 		await this.$axios.$delete('api/champions/' + _id, {
 			data: {
+				_csrf,
 				contentID
 			}
 		})
@@ -139,8 +143,8 @@ export const actions = {
 		let champion = getters['getChampionByID'](_id)
 		commit('changeGeneralChampionData', {champion, toBeChanged})
 	},
-	async changeGeneralChampionDataOnServer(ctx, {_id, toBeChanged}) {
-		await this.$axios.$patch('api/champions/' + _id, toBeChanged)
+	async changeGeneralChampionDataOnServer(ctx, {_id, _csrf, toBeChanged}) {
+		await this.$axios.$patch('api/champions/' + _id, {_csrf, ...toBeChanged})
 	},
 	refreshChampionForReactivity({commit, getters}, {_id, toBeChanged}) {
 		let champion = getters['getChampionFromChampionInfoFromServerByID'](_id)

@@ -89,6 +89,9 @@ export default {
 			return this.champion.roles.map(role => {
 				return { text: role[0].toUpperCase() + role.substr(1, 999), value: role }
 			})
+		},
+		csrfToken() {
+			return this.$store.getters['csrf/getCSRFToken']
 		}
 	},
 	methods: {
@@ -124,6 +127,7 @@ export default {
 		submitHeaderEdit() {
 			this.$store.dispatch('champions/changeGeneralChampionDataOnServer', {
 				_id: this.champion.mongo_id,
+				_csrf: this.csrfToken,
 				toBeChanged: { roles: this.champion.roles, power: this.champion.power }
 			})
 			this.removeHeaderFromContentEdited()

@@ -1,9 +1,10 @@
 const express = require('express')
-const axios = require('axios')
 const path = require('path')
+const {isAuthenticated} = require(path.join(__dirname, "/helpers.js"))
 const Champion = require(path.join(__dirname, "/models/Champion.js"))
 
 const router = express.Router()
+
 
 //GET CHAMPIONS
 router.get('/', (req, res) => {
@@ -29,7 +30,7 @@ router.get('/', (req, res) => {
 	}
 })
 //CREATE CHAMPION CONTENT
-router.put('/:_id/', async (req, res) => {
+router.put('/:_id/', isAuthenticated, async (req, res) => {
 	if(req.body.content) {
 		try {
 			let champion = await Champion.findById(req.params._id)
@@ -53,7 +54,7 @@ router.put('/:_id/', async (req, res) => {
 
 
 //CHANGE CHAMPIONS OR CHAMPION CONTENT
-router.patch('/:_id/:contentID', async (req, res) => {
+router.patch('/:_id/:contentID', isAuthenticated, async (req, res) => {
 	if(req.body.content) {
 		try {
 			let champion = await Champion.findById(req.params._id)
@@ -87,7 +88,7 @@ router.patch('/:_id/:contentID', async (req, res) => {
 	}
 })
 
-router.delete('/:_id', async (req, res) => {
+router.delete('/:_id', isAuthenticated, async (req, res) => {
 	if(req.body.contentID !== undefined) {
 		try {
 			let champion = await Champion.findById(req.params._id)
@@ -104,7 +105,7 @@ router.delete('/:_id', async (req, res) => {
 	}
 })
 
-router.patch('/:_id', async (req, res) => {
+router.patch('/:_id', isAuthenticated, async (req, res) => {
 	try {
 		let champion = await Champion.findById(req.params._id)
 		if (req.body.freelo !== undefined || req.body.power || req.body.runes || req.body.roles || req.body.swapContent) {

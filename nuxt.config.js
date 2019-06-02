@@ -29,9 +29,6 @@ export default {
     // https://axios.nuxtjs.org/
     "@nuxtjs/axios",
 
-    // https://auth.nuxtjs.org/
-    '@nuxtjs/auth',
-
     // https://nuxtjs.org/faq/cached-components/
     "@nuxtjs/component-cache",
 
@@ -69,18 +66,6 @@ export default {
 		display: "standalone",
 		scope: "/",
 		start_url: "/"
-  },
-
-
-  auth: {
-    redirect: false,
-    watchLoggedIn: false,
-    rewriteRedirects: true,
-    cookie: {
-      options: {
-        secure: true
-      }
-    }
   },
 
   webfontloader: {

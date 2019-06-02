@@ -145,6 +145,9 @@ export default {
 		},
 		contentCreated() {
 			return this.$store.getters['championguides/getContentCreated']
+		},
+		csrfToken() {
+			return this.$store.getters['csrf/getCSRFToken']
 		}
 	},
 	methods: {
@@ -153,6 +156,7 @@ export default {
 				if (!this.contentCreated.includes(this.champion.contents[index + dir].id)) {
 					this.$store.dispatch('champions/swapContentOfChampionByIndexAndDirection', {
 						_id: this.champion.mongo_id,
+						_csrf: this.csrfToken,
 						index,
 						dir
 					})

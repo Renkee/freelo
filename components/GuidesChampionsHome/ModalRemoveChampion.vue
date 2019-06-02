@@ -31,6 +31,9 @@ export default {
 		},
 		champion() {
 			return this.$store.getters['championmodals/getRemoveChampionModalChampion']
+		},
+		csrfToken() {
+			return this.$store.getters['csrf/getCSRFToken']
 		}
 	},
 	methods: {
@@ -44,6 +47,7 @@ export default {
 			})
 			await this.$store.dispatch('champions/changeGeneralChampionDataOnServer', {
 				_id,
+				_csrf: this.csrfToken,
 				toBeChanged: { freelo: false }
 			})
 		}
