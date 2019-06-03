@@ -2,7 +2,7 @@ import nodeExternals from "webpack-node-externals";
 import VuetifyLoaderPlugin from "vuetify-loader/lib/plugin";
 require("dotenv").config();
 
-export default {
+let settings = {
   // https://nuxtjs.org/api/configuration-modern
   mode: 'universal',
   modern: true,
@@ -109,4 +109,15 @@ export default {
       }
     }
   }
-};
+}
+
+// Set certificates for CloudFlare SSL
+if(process.env.NODE_ENV === 'production') {
+  import path from 'path'
+  const {cert, key} = require( path.resolve(__dirname, 'certs/certs.js') )
+  options.server.https = { cert, key }
+}
+
+
+
+export default settings;
