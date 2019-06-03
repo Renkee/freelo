@@ -1,6 +1,7 @@
 import nodeExternals from "webpack-node-externals";
 import VuetifyLoaderPlugin from "vuetify-loader/lib/plugin";
 import path from 'path'
+import fs from 'fs'
 require("dotenv").config();
 
 let settings = {
