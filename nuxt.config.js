@@ -1,5 +1,6 @@
 import nodeExternals from "webpack-node-externals";
 import VuetifyLoaderPlugin from "vuetify-loader/lib/plugin";
+import path from 'path'
 require("dotenv").config();
 
 let settings = {
@@ -113,7 +114,6 @@ let settings = {
 
 // Set certificates for CloudFlare SSL
 if(process.env.NODE_ENV === 'production') {
-  import path from 'path'
   const {cert, key} = require( path.resolve(__dirname, 'certs/certs.js') )
   options.server.https = { cert, key }
 }
