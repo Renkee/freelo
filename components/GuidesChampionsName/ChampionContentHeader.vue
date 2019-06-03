@@ -45,9 +45,10 @@
 						<v-chip
 							v-for="role in champion.roles"
 							:key="role"
-							class="text-capitalize white--text"
+							class="text-capitalize"
 							disabled
 							color="primary"
+							:style="colorScheme ? 'color: #000 !important;' : 'color: #fff !important;'"
 							label
 							>{{ role }}</v-chip
 						>
@@ -92,6 +93,9 @@ export default {
 		},
 		csrfToken() {
 			return this.$store.getters['csrf/getCSRFToken']
+		},
+		colorScheme() {
+			return this.$store.getters['colorscheme/getColorScheme']
 		}
 	},
 	methods: {

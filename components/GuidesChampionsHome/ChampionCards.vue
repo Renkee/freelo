@@ -31,9 +31,9 @@
 							small
 							label
 							disabled
-							dark
 							style="flex: none; font-size: 11.5px "
-							class="primary white--text text-capitalize font-weight-regular"
+							:style="colorScheme ? 'color: #000 !important;' : 'color: #fff !important;'"
+							class="primary text-capitalize font-weight-regular"
 							>{{ role }}</v-chip
 						>
 					</div>
@@ -50,7 +50,7 @@
 			<v-card-actions>
 				<ChampionPower :power="champion.power"></ChampionPower>
 				<v-spacer></v-spacer>
-				<v-btn flat nuxt :to="'champions/' + champion.name">Details</v-btn>
+				<v-btn flat color="primary" nuxt :to="'champions/' + champion.name">Details</v-btn>
 			</v-card-actions>
 		</v-card>
 	</div>
@@ -76,6 +76,11 @@ export default {
 	data() {
 		return {
 			hovered: []
+		}
+	},
+	computed: {
+		colorScheme() {
+			return this.$store.getters['colorscheme/getColorScheme']
 		}
 	},
 	methods: {

@@ -508,7 +508,8 @@ export default {
 									currentPatch +
 									'/img/champion/' +
 									champion.api_name +
-									'.png'
+									'.png',
+								type: 'champion'
 							}
 						})
 					}
@@ -518,7 +519,11 @@ export default {
 						propsData: {
 							name: name,
 							imageLink:
-								'https://ddragon.leagueoflegends.com/cdn/' + currentPatch + '/img/item/' + maybeItem[0].image.full
+								'https://ddragon.leagueoflegends.com/cdn/' +
+								currentPatch +
+								'/img/item/' +
+								maybeItem[0].image.full,
+							type: 'item'
 						}
 					})
 				}

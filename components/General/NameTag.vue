@@ -1,8 +1,13 @@
 <template>
-	<v-chip class="champion-tag white--text" disabled small color="primary">
+	<v-chip
+		class="champion-tag"
+		disabled
+		small
+		:color="type === 'champion' ? 'deep-orange' : type === 'item' ? 'blue darken-3' : 'pink'"
+	>
 		<a rel="noopener" title="Wiki page" :href="'https://leagueoflegends.fandom.com/wiki/' + name" target="_blank">
 			<v-avatar><img alt="" :src="imageLink"/></v-avatar>
-			<span class="champion-tag-text">{{ name }}</span>
+			<span class="champion-tag-text font-weight-medium" style="color: #fff !important;">{{ name }}</span>
 		</a>
 	</v-chip>
 </template>
@@ -11,7 +16,8 @@
 export default {
 	props: {
 		name: { type: String, default: '', required: true },
-		imageLink: { type: String, default: '', required: true }
+		imageLink: { type: String, default: '', required: true },
+		type: { type: String, default: 'champion', required: true }
 	}
 }
 </script>
@@ -25,13 +31,12 @@ a {
 	margin: 0;
 }
 .champion-tag-text {
-	color: #fff;
 	margin-right: 12px;
 	margin-left: -3px;
 }
 .champion-tag a {
 	margin-top: 2px !important;
-	margin-right: -12px;
+	margin-right: -15px;
 }
 .champion-tag img {
 	height: 1.4rem !important;

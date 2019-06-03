@@ -1,5 +1,5 @@
 <template>
-	<v-app :dark="isDark">
+	<v-app :dark="colorScheme">
 		<v-navigation-drawer v-model="drawerFilter" class="" app right clipped disable-resize-watcher>
 			<div class="pa-4 mb-3">
 				<div style="float: left" class="title">Filters</div>
@@ -39,7 +39,7 @@
 			</div>
 			<v-divider></v-divider>
 		</v-navigation-drawer>
-		<v-toolbar clipped-left clipped-right color="primary" dark fixed app>
+		<v-toolbar clipped-left clipped-right color="primary" :dark="!colorScheme" :light="colorScheme" fixed app>
 			<v-toolbar-side-icon aria-label="Open navigation menu" @click.stop="drawerNav = !drawerNav" />
 			<v-toolbar-title v-text="title" />
 			<v-spacer />
@@ -54,7 +54,7 @@
 			</v-btn>
 
 			<v-btn aria-label="Toggle dark mode" flat icon @click="toggleDarkMode">
-				<v-icon v-if="isDark" :size="20">fas fa-moon</v-icon>
+				<v-icon v-if="colorScheme" :size="20">fas fa-moon</v-icon>
 				<v-icon v-else :size="20">fas fa-sun</v-icon>
 			</v-btn>
 		</v-toolbar>
@@ -98,7 +98,6 @@ export default {
 	data() {
 		return {
 			title: 'Freelo',
-			isDark: false,
 			roles: ['top', 'jungle', 'middle', 'bottom', 'support'],
 			roleSwitch: [],
 			filteredRole: '',
@@ -126,6 +125,11 @@ export default {
 			]
 		}
 	},
+	computed: {
+		colorScheme() {
+			return this.$store.getters['colorscheme/getColorScheme']
+		}
+	},
 	watch: {
 		'$route.name'(val) {
 			if (val !== 'guides-champions') {
@@ -138,14 +142,11 @@ export default {
 	},
 	methods: {
 		toggleDarkMode() {
-			this.isDark = !this.isDark
-			this.isDark ? (this.$vuetify.theme.primary = '#616161') : (this.$vuetify.theme.primary = '#3F51B5')
+			this.$store.commit('colorscheme/toggleColorScheme', !this.colorScheme)
+			this.colorScheme ? (this.$vuetify.theme.primary = '#4DB6AC') : (this.$vuetify.theme.primary = '#3F51B5')
 		},
 		getAssetByRole(role) {
 			return '/roleImgs/' + role + '.png'
-		},
-		onChange(e) {
-			console.log(e) //eslint-disable-line
 		}
 	}
 }

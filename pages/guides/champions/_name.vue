@@ -1,7 +1,7 @@
 <template>
 	<div id="wrapper">
 		<div id="breadcrumbs">
-			<v-breadcrumbs :items="breadcrumbs" divider=">"> </v-breadcrumbs>
+			<v-breadcrumbs :items="breadcrumbs" divider=">" />
 		</div>
 		<ChampionContentHeader :logged-in="loggedIn" :champion="championByRoute"></ChampionContentHeader>
 		<ChampionContentMain :logged-in="loggedIn" :champion="championByRoute"></ChampionContentMain>
@@ -48,6 +48,7 @@ export default {
 				{
 					text: 'Guides',
 					disabled: true,
+					tag: 'span',
 					to: '/guides/champions'
 				},
 				{
@@ -60,6 +61,7 @@ export default {
 				{
 					text: this.championByRoute.name,
 					disabled: true,
+					tag: 'span',
 					to: '/guides/champions'
 				}
 			]
@@ -68,9 +70,12 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 #wrapper {
 	max-width: 740px;
 	margin: 0 auto;
+}
+#breadcrumbs a:not(.v-breadcrumbs__item--disabled) {
+	text-decoration: underline !important;
 }
 </style>
