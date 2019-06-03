@@ -61,7 +61,7 @@
 				</v-card-text>
 				<v-card-actions>
 					<v-spacer></v-spacer>
-					<v-btn :loading="addChampionButtonLoading" color="primary" @click="submitAddChampionModal()">
+					<v-btn :loading="addChampionButtonLoading" color="success" @click="submitAddChampionModal()">
 						Submit
 					</v-btn>
 					<v-btn flat @click="disableModal()">

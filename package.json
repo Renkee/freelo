@@ -46,6 +46,7 @@
 		"lru-cache": "^5.1.1",
 		"mongoose": "^5.4.22",
 		"nuxt": "^2.7.1",
+		"nuxt-client-init-module": "^0.1.4",
 		"nuxt-webfontloader": "^1.0.0",
 		"trie-search": "^1.2.9",
 		"vee-validate": "^2.1.5",

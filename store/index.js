@@ -6,10 +6,17 @@ export const actions = {
 		if (req.session && req.session.userID) {
 			commit('user/setUser', { id: req.session.userID })
 		}
+
 		// Get and construct required information for website
 		await dispatch('api/getCurrentPatch') // League API patch number
 		await dispatch('champions/getChampionInfoFromServer')
 		await dispatch('champions/getCombinedChampionInfo')
 		await dispatch('items/getItemsFromRiotGamesAPI')
+	},
+	async nuxtClientInit({ dispatch }) {
+		if(process.browser) {
+			const colorPreference = await dispatch('colorscheme/checkLocalStorageForColorSchemePreference')
+			if(colorPreference === 'dark') dispatch('colorscheme/toggleColorScheme')
+		}
 	}
 }

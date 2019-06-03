@@ -142,8 +142,8 @@ export default {
 	},
 	methods: {
 		toggleDarkMode() {
-			this.$store.commit('colorscheme/toggleColorScheme', !this.colorScheme)
-			this.colorScheme ? (this.$vuetify.theme.primary = '#4DB6AC') : (this.$vuetify.theme.primary = '#3F51B5')
+			this.$store.dispatch('colorscheme/toggleColorScheme')
+			this.$store.dispatch('colorscheme/changeColorSchemePreferenceInLocalStorage', !this.colorScheme ? 'light' : 'dark')
 		},
 		getAssetByRole(role) {
 			return '/roleImgs/' + role + '.png'

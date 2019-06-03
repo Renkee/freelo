@@ -47,7 +47,10 @@ let settings = {
     // "@nuxtjs/sentry",
 
     // https://github.com/Developmint/nuxt-webfontloader
-    "nuxt-webfontloader"
+    "nuxt-webfontloader",
+
+    // https://www.npmjs.com/package/nuxt-client-init-module
+    'nuxt-client-init-module'
 
     // https://github.com/nuxt-community/analytics-module
     // [
