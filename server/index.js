@@ -4,7 +4,7 @@ const MongoStore = require('connect-mongo')(session);
 const cookieParser = require('cookie-parser')
 const csrf = require('csurf')
 const bodyParser = require("body-parser");
-//const cors = require("cors");
+const cors = require("cors");
 const mongoose = require("mongoose");
 const app = express();
 
@@ -19,8 +19,9 @@ mongoose
 
 
 // Middleware
-
-//app.use(cors());
+if(process.env.NODE_ENV !== 'production') {
+	app.use(cors());
+}
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
