@@ -9,7 +9,14 @@
 			:style="loggedIn ? 'padding-bottom: 52px' : ''"
 		>
 			<div v-if="arrayContainsObjectWithID(contentCreated, content.id).status" class="IF_CREATING">
-				<v-tabs centered color="primary" slider-color="#FF9D45" dark @change="onTabChangeWhileCreate(content.id, $event)">
+				<v-tabs
+					centered
+					color="primary"
+					slider-color="#FF9D45"
+					:dark="!colorScheme"
+					:light="colorScheme"
+					@change="onTabChangeWhileCreate(content.id, $event)"
+				>
 					<v-tab>Create</v-tab>
 					<v-tab-item>
 						<v-card flat>
@@ -64,12 +71,19 @@
 				</v-tabs>
 				<v-card-actions class="if-logged-in">
 					<v-spacer></v-spacer>
-					<v-btn color="primary" @click="createContentSubmit(content.id, content.span)">Submit</v-btn>
+					<v-btn color="success" @click="createContentSubmit(content.id, content.span)">Submit</v-btn>
 					<v-btn flat :ripple="false" @click="deleteContent(index, 'cancel')">Cancel</v-btn>
 				</v-card-actions>
 			</div>
 			<div v-if="arrayContainsObjectWithID(contentEdited, content.id).status" class="IF_EDITING">
-				<v-tabs centered color="primary" slider-color="#FF9D45" dark @change="onTabChangeWhileEdit(content.id, $event)">
+				<v-tabs
+					centered
+					color="primary"
+					slider-color="#FF9D45"
+					:dark="!colorScheme"
+					:light="colorScheme"
+					@change="onTabChangeWhileEdit(content.id, $event)"
+				>
 					<v-tab>Edit</v-tab>
 					<v-tab-item>
 						<v-card flat>
@@ -127,7 +141,7 @@
 				</v-tabs>
 				<v-card-actions class="if-logged-in">
 					<v-spacer></v-spacer>
-					<v-btn color="primary" @click="submitEdit(content.id, content.span)">Submit</v-btn>
+					<v-btn color="success" @click="submitEdit(content.id, content.span)">Submit</v-btn>
 					<v-btn flat :ripple="false" @click="cancelEdit(content.id)">Cancel</v-btn>
 				</v-card-actions>
 			</div>
@@ -247,6 +261,9 @@ export default {
 		},
 		csrfToken() {
 			return this.$store.getters['csrf/getCSRFToken']
+		},
+		colorScheme() {
+			return this.$store.getters['colorscheme/getColorScheme']
 		}
 	},
 	created() {

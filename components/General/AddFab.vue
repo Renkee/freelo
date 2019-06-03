@@ -7,6 +7,7 @@
 			fixed
 			absolute
 			fab
+			:style="colorScheme ? 'color: #000 !important;' : 'color: #fff !important;'"
 			color="primary"
 			@click="$emit('fabClicked')"
 		>
@@ -20,6 +21,11 @@ export default {
 	data() {
 		return {
 			fabToggle: false
+		}
+	},
+	computed: {
+		colorScheme() {
+			return this.$store.getters['colorscheme/getColorScheme']
 		}
 	},
 	created() {

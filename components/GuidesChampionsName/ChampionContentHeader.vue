@@ -34,7 +34,7 @@
 					></v-range-slider>
 					<v-card-actions>
 						<v-spacer></v-spacer>
-						<v-btn color="primary" @click="submitHeaderEdit()">Submit</v-btn>
+						<v-btn color="success" @click="submitHeaderEdit()">Submit</v-btn>
 						<v-btn flat @click="cancelHeaderEdit()">Cancel</v-btn>
 					</v-card-actions>
 				</div>
