@@ -114,7 +114,7 @@ let settings = {
 
 // Set certificates for CloudFlare SSL
 if(process.env.NODE_ENV === 'production') {
-  options.server.https = {
+  settings.server.https = {
     cert: fs.readFileSync(path.resolve(__dirname, 'certs/freelo.renkee.eu.pem'), 'utf8'),
     key: fs.readFileSync(path.resolve(__dirname, 'certs/freelo.renkee.eu.key'), 'utf8')
   }
