@@ -1,12 +1,12 @@
 <template>
 	<div id="champ-container">
 		<ChampionCards :logged-in="loggedIn" :champions="filteredChampions"></ChampionCards>
+		<ModalChangelog></ModalChangelog>
 		<div v-if="loggedIn">
 			<AddFab
 				v-if="loggedIn && $store.getters['championmodals/getNewChampionModalState'] === false"
 				@fabClicked="$store.commit('championmodals/setNewChampionModalState', true)"
 			></AddFab>
-			<ModalChangelog></ModalChangelog>
 			<ModalRemoveChampion></ModalRemoveChampion>
 			<ModalAddNewChampion></ModalAddNewChampion>
 		</div>
