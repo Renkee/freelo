@@ -33,7 +33,7 @@ export default {
 			return this.$store.getters['championmodals/getRemoveChampionModalChampion']
 		},
 		csrfToken() {
-			return this.$store.getters['csrf/getCSRFToken']
+			return this.$store.getters['csrf/getToken']
 		}
 	},
 	methods: {
@@ -41,12 +41,12 @@ export default {
 			this.$store.commit('championmodals/setRemoveChampionModalState', false)
 		},
 		async removeChampion(_id) {
-			this.$store.dispatch('champions/changeGeneralChampionData', {
-				_id,
+			this.$store.dispatch('champions/changeGeneralData', {
+				championID: _id,
 				toBeChanged: { freelo: false }
 			})
-			await this.$store.dispatch('champions/changeGeneralChampionDataOnServer', {
-				_id,
+			await this.$store.dispatch('champions/changeGeneralDataInDB', {
+				championID: _id,
 				_csrf: this.csrfToken,
 				toBeChanged: { freelo: false }
 			})

@@ -33,10 +33,10 @@ export default {
 	},
 	computed: {
 		loggedIn() {
-			return this.$store.getters['user/getUser'].id !== null
+			return this.$store.getters['user/get'].id !== null
 		},
 		championByRoute() {
-			const freelo = this.$store.getters['champions/getFreeloChampions']
+			const freelo = this.$store.getters['champions/getFreelo']
 			const name = this.$route.params.name
 			const champion = freelo.find(champ => {
 				return champ.name === name || champ.api_name === name

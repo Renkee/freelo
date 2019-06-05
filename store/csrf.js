@@ -3,13 +3,13 @@ export const state = () => ({
 })
 
 export const mutations = {
-	setCSRFToken(state, csrf) {
+	setToken(state, csrf) {
 		state.csrfToken = csrf
 	}
 }
 
 export const getters = {
-	getCSRFToken(state) {
+	getToken(state) {
 		return state.csrfToken
 	}
 }

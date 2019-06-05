@@ -77,11 +77,6 @@ export default {
 				}
 			]
 		}
-	},
-	computed: {
-		loggedIn() {
-			return this.$store.getters['user/getUser'].id !== null
-		}
 	}
 }
 </script>

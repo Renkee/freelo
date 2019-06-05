@@ -5,13 +5,13 @@ export const state = () => ({
 })
 
 export const mutations = {
-	setUser(state, user) {
+	set(state, user) {
 		state.user = user
 	}
 }
 
 export const getters = {
-	getUser(state) {
+	get(state) {
 		return state.user
 	}
 }
@@ -20,7 +20,7 @@ export const actions = {
 	async login({ commit }, { email, password, _csrf }) {
 		try {
 			const data = await this.$axios.$post('/api/auth/login', { email, password, _csrf })
-			commit('setUser', data)
+			commit('set', data)
 		} catch (error) {
 			if (error.response) {
 				if (error.response.status === 401 || error.response.status === 400) {
@@ -46,7 +46,7 @@ export const actions = {
 	async logout({ commit }, { _csrf }) {
 		try {
 			await this.$axios.$post('/api/auth/logout', { _csrf })
-			commit('setUser', { id: null })
+			commit('set', { id: null })
 		} catch (error) {
 			if (error.response) {
 				if (error.response.status === 401 || error.response.status === 400) {

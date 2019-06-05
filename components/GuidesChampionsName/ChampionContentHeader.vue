@@ -92,10 +92,10 @@ export default {
 			})
 		},
 		csrfToken() {
-			return this.$store.getters['csrf/getCSRFToken']
+			return this.$store.getters['csrf/getToken']
 		},
 		colorScheme() {
-			return this.$store.getters['colorscheme/getColorScheme']
+			return this.$store.getters['colorscheme/get']
 		}
 	},
 	methods: {
@@ -109,8 +109,8 @@ export default {
 					return this.getIndexFromRole(a) > this.getIndexFromRole(b) ? 1 : -1
 				})
 			}
-			this.$store.dispatch('champions/changeGeneralChampionData', {
-				_id: this.champion.mongo_id,
+			this.$store.dispatch('champions/changeGeneralData', {
+				championID: this.champion.mongo_id,
 				toBeChanged: {
 					[type]: data
 				}
@@ -129,8 +129,8 @@ export default {
 			})
 		},
 		submitHeaderEdit() {
-			this.$store.dispatch('champions/changeGeneralChampionDataOnServer', {
-				_id: this.champion.mongo_id,
+			this.$store.dispatch('champions/changeGeneralDataInDB', {
+				championID: this.champion.mongo_id,
 				_csrf: this.csrfToken,
 				toBeChanged: { roles: this.champion.roles, power: this.champion.power }
 			})
@@ -141,8 +141,8 @@ export default {
 				return obj.id === 'header'
 			})
 			const { roles, runes, power, freelo } = headerInfo.stateBeforeEdit
-			this.$store.dispatch('champions/changeGeneralChampionData', {
-				_id: this.champion.mongo_id,
+			this.$store.dispatch('champions/changeGeneralData', {
+				championID: this.champion.mongo_id,
 				toBeChanged: {
 					roles,
 					runes,

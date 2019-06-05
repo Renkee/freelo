@@ -3,21 +3,21 @@ export const state = () => ({
 })
 
 export const getters = {
-	getItems(state) {
+	get(state) {
 		return state.items
 	}
 }
 
 export const actions = {
-	async getItemsFromRiotGamesAPI({ commit, rootGetters }) {
+	async getFromRiotGamesAPI({ commit, rootGetters }) {
 		const currentPatch = rootGetters['api/getPatch']
 		const items = await this.$axios.$get('http://ddragon.leagueoflegends.com/cdn/' + currentPatch + '/data/en_US/item.json')
-		commit('setItems', Object.values(items.data))
+		commit('set', Object.values(items.data))
 	}
 }
 
 export const mutations = {
-	setItems(state, items) {
+	set(state, items) {
 		state.items = items
 	}
 }

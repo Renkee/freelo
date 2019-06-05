@@ -69,7 +69,7 @@ export const actions = {
 			} else {
 				let champion = null;
 				if(subject.type === 'champion') {
-					champion = rootGetters['champions/getChampionByID'](subject.id)
+					champion = rootGetters['champions/getByID'](subject.id)
 				}
 				finalArray.unshift({
 					time: data[i].createdAt,

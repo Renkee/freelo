@@ -147,15 +147,15 @@ export default {
 			return this.$store.getters['championguides/getContentCreated']
 		},
 		csrfToken() {
-			return this.$store.getters['csrf/getCSRFToken']
+			return this.$store.getters['csrf/getToken']
 		}
 	},
 	methods: {
 		swapContent(index, dir) {
 			if (index + dir < this.champion.contents.length && index + dir > -1) {
 				if (!this.contentCreated.includes(this.champion.contents[index + dir].id)) {
-					this.$store.dispatch('champions/swapContentOfChampionByIndexAndDirection', {
-						_id: this.champion.mongo_id,
+					this.$store.dispatch('champions/swapContentByIndexAndDirection', {
+						championID: this.champion.mongo_id,
 						_csrf: this.csrfToken,
 						index,
 						dir

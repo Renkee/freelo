@@ -46,10 +46,10 @@ export default {
 	},
 	computed: {
 		loggedIn() {
-			return this.$store.getters['user/getUser'].id !== null
+			return this.$store.getters['user/get'].id !== null
 		},
 		freeloChampions() {
-			return this.$store.getters['champions/getFreeloChampions']
+			return this.$store.getters['champions/getFreelo']
 		},
 		filteredChampions() {
 			const nameFilter = this.$store.getters['filters/getChampionNameFilter']

@@ -7,19 +7,19 @@ export const state = () => ({
 })
 
 export const getters = {
-	getChampionInfoFromServer(state) {
+	getInfoFromServer(state) {
 		return state.championInfoFromServer
 	},
-	getAllChampions(state) {
+	getAll(state) {
 		return state.combinedChampionInfo
 	},
-	getFreeloChampions(state) {
+	getFreelo(state) {
 		return state.combinedChampionInfo.filter( (champion) => { return champion.freelo === true } )
 	},
-	getNotFreeloChampions(state) {
+	getNotFreelo(state) {
 		return state.combinedChampionInfo.filter( (champion) => { return champion.freelo !== true } )
 	},
-	getChampionByID(state) {
+	getByID(state) {
 		return (id) => {
 			return state.combinedChampionInfo.find((champion) => {return champion.mongo_id === id})
 		}
@@ -29,14 +29,14 @@ export const getters = {
 			return state.championInfoFromServer.find((champion) => {return champion._id === id})
 		}
 	},
-	getChampionContentByIDs(state, getters) {
+	getContentByIDs(state, getters) {
 		return (championID, contentID) => {
-			return getters['getChampionByID'](championID).contents.find((content) => {
+			return getters['getByID'](championID).contents.find((content) => {
 				return content.id === contentID
 			})
 		}
 	},
-	getChampionByNameOrApiName(state) {
+	getByNameOrApiName(state) {
 		return (name) => {
 			return state.combinedChampionInfo.find((champion) => {
 				return champion.name === name || champion.api_name === name
@@ -46,13 +46,12 @@ export const getters = {
 }
 
 export const actions = {
-
-	async getChampionInfoFromServer({ commit }) {
+	async getInfoFromDB({ commit }) {
 		const champions = await this.$axios.$get('api/champions')
-		commit('setChampionInfoFromServer', champions)
+		commit('setInfoFromDB', champions)
 	},
-	async getCombinedChampionInfo({ commit, rootGetters }) {
-		let champions = rootGetters['champions/getChampionInfoFromServer']
+	async processDataFromDBAndApi({ commit, rootGetters }) {
+		let champions = rootGetters['champions/getInfoFromServer']
 		const currentPatch = rootGetters['api/getPatch']
 		let results = []
 
@@ -80,14 +79,14 @@ export const actions = {
 
 		commit('setCombinedChampionInfo', results)
 	},
-	updateContentPropertyOfChampionByID({commit, getters}, {championID, contentID, newContent}) {
-		let oldContent = getters['getChampionContentByIDs'](championID, contentID)
-		commit('setContentPropertyOfChampionByID', {oldContent, newContent})
+	updateContentPropertyByID({commit, getters}, {championID, contentID, newContent}) {
+		let oldContent = getters['getContentByIDs'](championID, contentID)
+		commit('setContentPropertyByID', {oldContent, newContent})
 	},
-	async swapContentOfChampionByIndexAndDirection({commit, getters}, {_id, _csrf, index, dir}) {
-		let champion = getters['getChampionByID'](_id)
-		commit('swapContentOfChampionByIndexAndDirection', {contents: champion.contents, index, dir})
-		await this.$axios.$patch('api/champions/' + _id, {
+	async swapContentByIndexAndDirection({commit, getters}, {championID, _csrf, index, dir}) {
+		let champion = getters['getByID'](championID)
+		commit('swapContentByIndexAndDirection', {contents: champion.contents, index, dir})
+		await this.$axios.$patch('api/champions/' + championID, {
 			_csrf,
 			swapContent: {
 				index,
@@ -95,8 +94,8 @@ export const actions = {
 			}
 		})
 	},
-	async updateChampionContentInDatabase({dispatch}, {_id, _csrf, contentID, title, text, span}) {
-		await this.$axios.$patch('api/champions/' + _id + '/' + contentID, {
+	async updateContentInDB({dispatch}, {championID, _csrf, contentID, title, text, span}) {
+		await this.$axios.$patch('api/champions/' + championID + '/' + contentID, {
 			_csrf,
 			content: {
 				title,
@@ -108,7 +107,7 @@ export const actions = {
 			_csrf,
 			subject: {
 				type: 'champion',
-				id: _id
+				id: championID
 			},
 			changed_element: {
 				type: 'content',
@@ -120,9 +119,9 @@ export const actions = {
 			action: 'update'
 		}, {root:true})
 	},
-	createContentOfChampionWithID({commit, getters}, {_id, contentID}) {
-		let champion = getters['getChampionByID'](_id)
-		commit('createContentOfChampionWithID', {
+	createContentWithID({commit, getters}, {championID, contentID}) {
+		let champion = getters['getByID'](championID)
+		commit('createContentWithID', {
 			contents: champion.contents,
 			newContent: {
 				id: contentID,
@@ -132,8 +131,8 @@ export const actions = {
 			}
 		})
 	},
-	async createContentOfChampionWithIDInDatabase({dispatch}, {_id, _csrf, contentID, title, text, span}) {
-		await this.$axios.$put('api/champions/' + _id, {
+	async createContentWithIDInDB({dispatch}, {championID, _csrf, contentID, title, text, span}) {
+		await this.$axios.$put('api/champions/' + championID, {
 			_csrf,
 			content: {
 				contentID,
@@ -146,7 +145,7 @@ export const actions = {
 			_csrf,
 			subject: {
 				type: 'champion',
-				id: _id
+				id: championID
 			},
 			changed_element: {
 				type: 'content',
@@ -158,12 +157,12 @@ export const actions = {
 			action: 'create'
 		}, {root:true})
 	},
-	async deleteContentInChampion({commit, getters}, {_id, contentID}) {
-		let champion = getters['getChampionByID'](_id)
-		commit('deleteContentInChampion', {contents: champion.contents, contentID})
+	async deleteContent({commit, getters}, {championID, contentID}) {
+		let champion = getters['getByID'](championID)
+		commit('deleteContent', {contents: champion.contents, contentID})
 	},
-	async deleteContentInChampionInDatabase({dispatch}, {_id, _csrf, contentID, title}) {
-		await this.$axios.$delete('api/champions/' + _id, {
+	async deleteContentInDB({dispatch}, {championID, _csrf, contentID, title}) {
+		await this.$axios.$delete('api/champions/' + championID, {
 			data: {
 				_csrf,
 				contentID
@@ -173,7 +172,7 @@ export const actions = {
 			_csrf,
 			subject: {
 				type: 'champion',
-				id: _id
+				id: championID
 			},
 			changed_element: {
 				type: 'content',
@@ -185,12 +184,12 @@ export const actions = {
 			action: 'remove'
 		}, {root:true})
 	},
-	changeGeneralChampionData({commit, getters}, {_id, toBeChanged}) {
-		let champion = getters['getChampionByID'](_id)
-		commit('changeGeneralChampionData', {champion, toBeChanged})
+	changeGeneralData({commit, getters}, {championID, toBeChanged}) {
+		let champion = getters['getByID'](championID)
+		commit('changeGeneralData', {champion, toBeChanged})
 	},
-	async changeGeneralChampionDataOnServer({dispatch}, {_id, _csrf, toBeChanged}) {
-		await this.$axios.$patch('api/champions/' + _id, {_csrf, ...toBeChanged})
+	async changeGeneralDataInDB({dispatch}, {championID, _csrf, toBeChanged}) {
+		await this.$axios.$patch('api/champions/' + championID, {_csrf, ...toBeChanged})
 		Object.keys(toBeChanged).forEach(async (change) => {
 			let action = 'change'
 			if(change === 'freelo') {
@@ -200,7 +199,7 @@ export const actions = {
 				_csrf,
 				subject: {
 					type: 'champion',
-					id: _id
+					id: championID
 				},
 				changed_element: {
 					type: change,
@@ -213,37 +212,37 @@ export const actions = {
 			}, {root:true})
 		})
 	},
-	refreshChampionForReactivity({commit, getters}, {_id, toBeChanged}) {
+	refreshForReactivity({commit, getters}, {_id, toBeChanged}) {
 		let champion = getters['getChampionFromChampionInfoFromServerByID'](_id)
-		commit('changeGeneralChampionData', {champion, toBeChanged})
+		commit('changeGeneralData', {champion, toBeChanged})
 	}
 }
 
 export const mutations = {
-	setChampionInfoFromServer(state, champions) {
+	setInfoFromDB(state, champions) {
 		state.championInfoFromServer = champions
 	},
 	setCombinedChampionInfo(state, champions) {
 		state.combinedChampionInfo = champions
 	},
-	setContentPropertyOfChampionByID(state, {oldContent, newContent}) {
+	setContentPropertyByID(state, {oldContent, newContent}) {
 		Object.keys(newContent).forEach((property) => {
 			Vue.set(oldContent, property, newContent[property] )
 		})
 	},
-	createContentOfChampionWithID(state, {contents, newContent}) {
+	createContentWithID(state, {contents, newContent}) {
 		contents.push(newContent)
 	},
-	swapContentOfChampionByIndexAndDirection(state, {contents, index, dir}) {
+	swapContentByIndexAndDirection(state, {contents, index, dir}) {
 		let temp = contents[index]
 		contents[index] = contents[index + dir]
 		Vue.set(contents, index + dir, temp)
 	},
-	deleteContentInChampion(state, {contents, contentID}) {
+	deleteContent(state, {contents, contentID}) {
 		const index = contents.findIndex((content) => {return parseInt(content.id) === parseInt(contentID)})
 		contents.splice(index, 1)
 	},
-	changeGeneralChampionData(state, {champion, toBeChanged}) {
+	changeGeneralData(state, {champion, toBeChanged}) {
 		Object.keys(toBeChanged).forEach((prop) => {
 			Vue.set(champion, prop, toBeChanged[prop])
 		})

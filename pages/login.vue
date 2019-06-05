@@ -38,7 +38,7 @@ export default {
 	},
 	computed: {
 		csrfToken() {
-			return this.$store.getters['csrf/getCSRFToken']
+			return this.$store.getters['csrf/getToken']
 		}
 	},
 	methods: {

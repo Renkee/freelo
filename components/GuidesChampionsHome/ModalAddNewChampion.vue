@@ -90,7 +90,7 @@ export default {
 			return this.$store.getters['championmodals/getNewChampionModalState']
 		},
 		notFreeloChampions() {
-			return this.$store.getters['champions/getNotFreeloChampions']
+			return this.$store.getters['champions/getNotFreelo']
 		},
 		notFreeloChampionsNames() {
 			return this.notFreeloChampions.map(champ => {
@@ -98,7 +98,7 @@ export default {
 			})
 		},
 		csrfToken() {
-			return this.$store.getters['csrf/getCSRFToken']
+			return this.$store.getters['csrf/getToken']
 		}
 	},
 	methods: {
@@ -118,10 +118,10 @@ export default {
 				roles.sort((a, b) => {
 					return this.getIndexFromRole(a) > this.getIndexFromRole(b) ? 1 : -1
 				})
-				const payload = { _id: champion.mongo_id, toBeChanged: { freelo: true, roles, power } }
+				const payload = { championID: champion.mongo_id, toBeChanged: { freelo: true, roles, power } }
 
-				await this.$store.dispatch('champions/changeGeneralChampionData', payload)
-				await this.$store.dispatch('champions/changeGeneralChampionDataOnServer', { _csrf: this.csrfToken, ...payload })
+				await this.$store.dispatch('champions/changeGeneralData', payload)
+				await this.$store.dispatch('champions/changeGeneralDataInDB', { _csrf: this.csrfToken, ...payload })
 				this.disableModal()
 
 				// Reset modal items

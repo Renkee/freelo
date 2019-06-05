@@ -4,25 +4,23 @@ export const state = () => ({
 })
 
 export const mutations = {
-	toggleColorScheme(state) {
+	toggle(state) {
 		state.colorScheme = !state.colorScheme
 	}
 }
 
 export const getters = {
-	getColorScheme(state) {
+	get(state) {
 		return state.colorScheme
 	}
 }
 
 export const actions = {
-	toggleColorScheme({ commit, getters }) {
-		!getters.getColorScheme
-			? (Vue.prototype.$vuetify.theme.primary = '#4DB6AC')
-			: (Vue.prototype.$vuetify.theme.primary = '#3F51B5')
-		commit('toggleColorScheme')
+	toggle({ commit, getters }) {
+		!getters.get ? (Vue.prototype.$vuetify.theme.primary = '#4DB6AC') : (Vue.prototype.$vuetify.theme.primary = '#3F51B5')
+		commit('toggle')
 	},
-	checkLocalStorageForColorSchemePreference() {
+	checkLocalStorageForPreference() {
 		if (process.browser) {
 			if (window.localStorage) {
 				const preference = window.localStorage.getItem('colorScheme')
@@ -35,7 +33,7 @@ export const actions = {
 			}
 		}
 	},
-	changeColorSchemePreferenceInLocalStorage(context, preference) {
+	changePreferenceInLocalStorage(context, preference) {
 		if (process.browser) {
 			if (window.localStorage) {
 				window.localStorage.setItem('colorScheme', preference)

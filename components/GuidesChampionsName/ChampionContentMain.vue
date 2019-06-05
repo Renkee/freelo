@@ -94,7 +94,6 @@
 									box
 									@input="updateContentWhileEditing(content.id, { title: $event })"
 								/>
-								<!-- <v-btn @click="onClick(content)">do something</v-btn> -->
 								<v-textarea
 									:id="'content-text-field-' + content.id"
 									:value="
@@ -251,19 +250,19 @@ export default {
 			return this.$store.getters['championguides/getContentCreated']
 		},
 		allChampions() {
-			return this.$store.getters['champions/getAllChampions']
+			return this.$store.getters['champions/getAll']
 		},
 		lolItems() {
-			return this.$store.getters['items/getItems']
+			return this.$store.getters['items/get']
 		},
 		allNameTagPossibilites() {
 			return this.allChampions.concat(this.lolItems)
 		},
 		csrfToken() {
-			return this.$store.getters['csrf/getCSRFToken']
+			return this.$store.getters['csrf/getToken']
 		},
 		colorScheme() {
-			return this.$store.getters['colorscheme/getColorScheme']
+			return this.$store.getters['colorscheme/get']
 		}
 	},
 	created() {
@@ -344,7 +343,7 @@ export default {
 			}
 		},
 		updateContent(contentID, newContent) {
-			this.$store.dispatch('champions/updateContentPropertyOfChampionByID', {
+			this.$store.dispatch('champions/updateContentPropertyByID', {
 				championID: this.champion.mongo_id,
 				contentID,
 				newContent
@@ -388,8 +387,8 @@ export default {
 			this.updateContent(id, { ...stateWhileEdit, span })
 			this.updateContentTextByID(id, this.replaceWithNameTags(stateWhileEdit.text))
 
-			this.$store.dispatch('champions/updateChampionContentInDatabase', {
-				_id: this.champion.mongo_id,
+			this.$store.dispatch('champions/updateContentInDB', {
+				championID: this.champion.mongo_id,
 				_csrf: this.csrfToken,
 				contentID: id,
 				...stateWhileEdit,
@@ -400,7 +399,7 @@ export default {
 		createContent() {
 			const maximumID = Math.max(...this.champion.contents.map(obj => obj.id)) // returns -Infinity if input is undefined
 			const contentID = maximumID === -Infinity ? 0 : maximumID + 1
-			this.$store.dispatch('champions/createContentOfChampionWithID', { _id: this.champion.mongo_id, contentID })
+			this.$store.dispatch('champions/createContentWithID', { championID: this.champion.mongo_id, contentID })
 			this.contentTexts.push({ id: contentID, text: '' })
 			const index = this.champion.contents.length - 1
 			this.createContentStartEdit(contentID).then(() => {
@@ -418,8 +417,8 @@ export default {
 				return el.id === id
 			}).stateWhileEdit
 
-			this.$store.dispatch('champions/createContentOfChampionWithIDInDatabase', {
-				_id: this.champion.mongo_id,
+			this.$store.dispatch('champions/createContentWithIDInDB', {
+				championID: this.champion.mongo_id,
 				_csrf: this.csrfToken,
 				contentID: id,
 				...stateWhileEdit,
@@ -436,7 +435,7 @@ export default {
 			await this.deleteContentRemotely(id, title)
 		},
 		deleteContentLocally(id, delOrCan) {
-			this.$store.dispatch('champions/deleteContentInChampion', { _id: this.champion.mongo_id, contentID: id })
+			this.$store.dispatch('champions/deleteContent', { championID: this.champion.mongo_id, contentID: id })
 			if (
 				this.contentCreated.find(el => {
 					return el.id === id
@@ -450,8 +449,8 @@ export default {
 			}
 		},
 		async deleteContentRemotely(id, title) {
-			await this.$store.dispatch('champions/deleteContentInChampionInDatabase', {
-				_id: this.champion.mongo_id,
+			await this.$store.dispatch('champions/deleteContentInDB', {
+				championID: this.champion.mongo_id,
 				_csrf: this.csrfToken,
 				contentID: id,
 				title
@@ -521,7 +520,7 @@ export default {
 				if (maybeItem !== undefined && maybeItem[0].gold === undefined) {
 					// A champion
 
-					const champion = this.$store.getters['champions/getChampionByNameOrApiName'](name)
+					const champion = this.$store.getters['champions/getByNameOrApiName'](name)
 
 					if (champion) {
 						instance = new ComponentClass({
@@ -570,30 +569,6 @@ export default {
 			} else {
 				return text
 			}
-		},
-		onClick({ id, text }) {
-			const element = document.getElementById('content-text-field-' + id)
-			const splitText = text.split('')
-			const selectionStartSave = element.selectionStart
-			const toBeAddedToText = `*{"name": "${this.champion.name}", "type": "champion" }*`
-			text =
-				splitText.slice(0, selectionStartSave).join('') +
-				toBeAddedToText +
-				splitText.slice(selectionStartSave, splitText.length).join('')
-
-			this.$store.dispatch('champions/updateContentPropertyOfChampionByID', {
-				championID: this.champion.mongo_id,
-				contentID: id,
-				newContent: { text }
-			})
-
-			this.$nextTick(() => {
-				element.focus()
-				element.setSelectionRange(
-					selectionStartSave + toBeAddedToText.length,
-					selectionStartSave + toBeAddedToText.length
-				)
-			})
 		}
 	}
 }

@@ -135,7 +135,7 @@ export default {
 	},
 	computed: {
 		colorScheme() {
-			return this.$store.getters['colorscheme/getColorScheme']
+			return this.$store.getters['colorscheme/get']
 		}
 	},
 	watch: {
@@ -150,8 +150,8 @@ export default {
 	},
 	methods: {
 		toggleDarkMode() {
-			this.$store.dispatch('colorscheme/toggleColorScheme')
-			this.$store.dispatch('colorscheme/changeColorSchemePreferenceInLocalStorage', !this.colorScheme ? 'light' : 'dark')
+			this.$store.dispatch('colorscheme/toggle')
+			this.$store.dispatch('colorscheme/changePreferenceInLocalStorage', !this.colorScheme ? 'light' : 'dark')
 		},
 		getAssetByRole(role) {
 			return '/roleImgs/' + role + '.png'

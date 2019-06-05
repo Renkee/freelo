@@ -77,7 +77,7 @@ export default {
 	},
 	computed: {
 		colorScheme() {
-			return this.$store.getters['colorscheme/getColorScheme']
+			return this.$store.getters['colorscheme/get']
 		}
 	},
 	methods: {
