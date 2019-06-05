@@ -1,7 +1,9 @@
 /* eslint-disable */
 export const actions = {
 	async nuxtServerInit({ commit, dispatch}, {req}) {
-		commit('csrf/setCSRFToken', req.csrfToken())
+		if(req.csrfToken) {
+			commit('csrf/setCSRFToken', req.csrfToken())
+		}
 
 		if (req.session && req.session.userID) {
 			commit('user/setUser', { id: req.session.userID })
@@ -12,6 +14,7 @@ export const actions = {
 		await dispatch('champions/getChampionInfoFromServer')
 		await dispatch('champions/getCombinedChampionInfo')
 		await dispatch('items/getItemsFromRiotGamesAPI')
+		await dispatch('changelog/getDataFromDB')
 	},
 	async nuxtClientInit({ dispatch }) {
 		if(process.browser) {

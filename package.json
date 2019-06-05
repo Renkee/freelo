@@ -53,6 +53,7 @@
 		"vue-async-computed": "^3.6.1",
 		"vue-markdown": "^2.2.4",
 		"vue-scrollto": "^2.15.0",
+		"vue-timeago": "^5.1.2",
 		"vuetify": "^1.4.2",
 		"vuetify-loader": "^1.1.1"
 	},

@@ -52,7 +52,15 @@
 			>
 				<v-icon>filter_list</v-icon>
 			</v-btn>
-
+			<v-btn
+				v-if="this.$route.name === 'guides-champions'"
+				aria-label="Open changelogs"
+				flat
+				icon
+				@click="enableChangelogModal"
+			>
+				<v-icon>assignment</v-icon>
+			</v-btn>
 			<v-btn aria-label="Toggle dark mode" flat icon @click="toggleDarkMode">
 				<v-icon v-if="colorScheme" :size="20">fas fa-moon</v-icon>
 				<v-icon v-else :size="20">fas fa-sun</v-icon>
@@ -147,6 +155,9 @@ export default {
 		},
 		getAssetByRole(role) {
 			return '/roleImgs/' + role + '.png'
+		},
+		enableChangelogModal() {
+			this.$store.commit('changelog/setState', true)
 		}
 	}
 }

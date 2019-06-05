@@ -4,8 +4,6 @@ import Vue from 'vue'
 export const state = () => ({
 	championInfoFromServer: [],
 	combinedChampionInfo: [],
-	freeloChampions: [],
-	notFreeloChampions: []
 })
 
 export const getters = {
@@ -48,6 +46,7 @@ export const getters = {
 }
 
 export const actions = {
+
 	async getChampionInfoFromServer({ commit }) {
 		const champions = await this.$axios.$get('api/champions')
 		commit('setChampionInfoFromServer', champions)
@@ -96,7 +95,7 @@ export const actions = {
 			}
 		})
 	},
-	async updateChampionContentInDatabase(context, {_id, _csrf, contentID, title, text, span}) {
+	async updateChampionContentInDatabase({dispatch}, {_id, _csrf, contentID, title, text, span}) {
 		await this.$axios.$patch('api/champions/' + _id + '/' + contentID, {
 			_csrf,
 			content: {
@@ -105,6 +104,21 @@ export const actions = {
 				span
 			}
 		})
+		await dispatch('changelog/addNewChange', {
+			_csrf,
+			subject: {
+				type: 'champion',
+				id: _id
+			},
+			changed_element: {
+				type: 'content',
+				extra: {
+					id: contentID,
+					title
+				}
+			},
+			action: 'update'
+		}, {root:true})
 	},
 	createContentOfChampionWithID({commit, getters}, {_id, contentID}) {
 		let champion = getters['getChampionByID'](_id)
@@ -118,7 +132,7 @@ export const actions = {
 			}
 		})
 	},
-	async createContentOfChampionWithIDInDatabase({getters}, {_id, _csrf, contentID, title, text, span}) {
+	async createContentOfChampionWithIDInDatabase({dispatch}, {_id, _csrf, contentID, title, text, span}) {
 		await this.$axios.$put('api/champions/' + _id, {
 			_csrf,
 			content: {
@@ -128,23 +142,76 @@ export const actions = {
 				span
 			}
 		})
+		await dispatch('changelog/addNewChange', {
+			_csrf,
+			subject: {
+				type: 'champion',
+				id: _id
+			},
+			changed_element: {
+				type: 'content',
+				extra: {
+					id: contentID,
+					title
+				}
+			},
+			action: 'create'
+		}, {root:true})
 	},
-	async deleteContentInChampion({commit, getters}, {_id, _csrf, contentID}) {
+	async deleteContentInChampion({commit, getters}, {_id, contentID}) {
 		let champion = getters['getChampionByID'](_id)
 		commit('deleteContentInChampion', {contents: champion.contents, contentID})
+	},
+	async deleteContentInChampionInDatabase({dispatch}, {_id, _csrf, contentID, title}) {
 		await this.$axios.$delete('api/champions/' + _id, {
 			data: {
 				_csrf,
 				contentID
 			}
 		})
+		await dispatch('changelog/addNewChange', {
+			_csrf,
+			subject: {
+				type: 'champion',
+				id: _id
+			},
+			changed_element: {
+				type: 'content',
+				extra: {
+					id: contentID,
+					title
+				}
+			},
+			action: 'remove'
+		}, {root:true})
 	},
 	changeGeneralChampionData({commit, getters}, {_id, toBeChanged}) {
 		let champion = getters['getChampionByID'](_id)
 		commit('changeGeneralChampionData', {champion, toBeChanged})
 	},
-	async changeGeneralChampionDataOnServer(ctx, {_id, _csrf, toBeChanged}) {
+	async changeGeneralChampionDataOnServer({dispatch}, {_id, _csrf, toBeChanged}) {
 		await this.$axios.$patch('api/champions/' + _id, {_csrf, ...toBeChanged})
+		Object.keys(toBeChanged).forEach(async (change) => {
+			let action = 'change'
+			if(change === 'freelo') {
+				action = toBeChanged.freelo ? 'add' : 'remove'
+			}
+			await dispatch('changelog/addNewChange', {
+				_csrf,
+				subject: {
+					type: 'champion',
+					id: _id
+				},
+				changed_element: {
+					type: change,
+					extra: {
+						id: null,
+						title: null
+					}
+				},
+				action
+			}, {root:true})
+		})
 	},
 	refreshChampionForReactivity({commit, getters}, {_id, toBeChanged}) {
 		let champion = getters['getChampionFromChampionInfoFromServerByID'](_id)
@@ -163,9 +230,6 @@ export const mutations = {
 		Object.keys(newContent).forEach((property) => {
 			Vue.set(oldContent, property, newContent[property] )
 		})
-	},
-	deleteContentOfChampionByIndex(state, information) {
-		delete state.freeloChampions.find((champion) => {return champion.name === name || champion.api_name === name}).contents[contentIndex]
 	},
 	createContentOfChampionWithID(state, {contents, newContent}) {
 		contents.push(newContent)

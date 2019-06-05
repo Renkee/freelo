@@ -72,7 +72,7 @@
 				<v-card-actions class="if-logged-in">
 					<v-spacer></v-spacer>
 					<v-btn color="success" @click="createContentSubmit(content.id, content.span)">Submit</v-btn>
-					<v-btn flat :ripple="false" @click="deleteContent(index, 'cancel')">Cancel</v-btn>
+					<v-btn flat :ripple="false" @click="deleteContentLocally(index, 'cancel')">Cancel</v-btn>
 				</v-card-actions>
 			</div>
 			<div v-if="arrayContainsObjectWithID(contentEdited, content.id).status" class="IF_EDITING">
@@ -181,7 +181,7 @@
 									color="error"
 									@click="
 										$set(deleteDialogs, index, false)
-										deleteContent(content.id, 'delete')
+										deleteContentEverywhere(content, 'delete')
 									"
 								>
 									Delete
@@ -286,7 +286,7 @@ export default {
 		})
 
 		this.contentCreated.forEach(id => {
-			this.deleteContent(id)
+			this.deleteContentLocally(id)
 		})
 
 		this.$store.commit('championguides/setContentEdited', [])
@@ -404,7 +404,7 @@ export default {
 			this.contentTexts.push({ id: contentID, text: '' })
 			const index = this.champion.contents.length - 1
 			this.createContentStartEdit(contentID).then(() => {
-				this.$scrollTo(`#content-item-${index}`)
+				this.$vuetify.goTo(`#content-item-${index}`, { duration: 400, offset: 0 })
 			})
 		},
 		createContentStartEdit(id) {
@@ -431,13 +431,12 @@ export default {
 
 			this.$store.commit('championguides/removeItemByIdFromContentCreated', id)
 		},
-		async deleteContent(id, delOrCan) {
-			await this.$store.dispatch('champions/deleteContentInChampion', {
-				_id: this.champion.mongo_id,
-				_csrf: this.csrfToken,
-				contentID: id
-			})
-
+		async deleteContentEverywhere({ id, title }, delOrCan) {
+			this.deleteContentLocally(id, delOrCan)
+			await this.deleteContentRemotely(id, title)
+		},
+		deleteContentLocally(id, delOrCan) {
+			this.$store.dispatch('champions/deleteContentInChampion', { _id: this.champion.mongo_id, contentID: id })
 			if (
 				this.contentCreated.find(el => {
 					return el.id === id
@@ -449,6 +448,14 @@ export default {
 			if (delOrCan === 'delete') {
 				this.deletedSnackbar = true
 			}
+		},
+		async deleteContentRemotely(id, title) {
+			await this.$store.dispatch('champions/deleteContentInChampionInDatabase', {
+				_id: this.champion.mongo_id,
+				_csrf: this.csrfToken,
+				contentID: id,
+				title
+			})
 		},
 		arrayContainsObjectWithID(array, id) {
 			const content = array.find(obj => {

@@ -6,6 +6,7 @@
 				v-if="loggedIn && $store.getters['championmodals/getNewChampionModalState'] === false"
 				@fabClicked="$store.commit('championmodals/setNewChampionModalState', true)"
 			></AddFab>
+			<ModalChangelog></ModalChangelog>
 			<ModalRemoveChampion></ModalRemoveChampion>
 			<ModalAddNewChampion></ModalAddNewChampion>
 		</div>
@@ -15,6 +16,7 @@
 <script>
 import ChampionCards from '~/components/GuidesChampionsHome/ChampionCards'
 import AddFab from '~/components/General/AddFab'
+import ModalChangelog from '~/components/General/ModalChangelog'
 import ModalAddNewChampion from '~/components/GuidesChampionsHome/ModalAddNewChampion'
 import ModalRemoveChampion from '~/components/GuidesChampionsHome/ModalRemoveChampion'
 
@@ -32,6 +34,7 @@ export default {
 	},
 	components: {
 		ChampionCards,
+		ModalChangelog,
 		ModalAddNewChampion,
 		ModalRemoveChampion,
 		AddFab

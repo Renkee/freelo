@@ -80,7 +80,7 @@ let settings = {
   },
 
   // https://nuxtjs.org/api/configuration-plugins
-  plugins: ["~/plugins/vuetify", "~/plugins/vee-validate"],
+  plugins: ["~/plugins/vuetify", "~/plugins/vee-validate", "~/plugins/vue-timeago"],
 
   // https://nuxtjs.org/api/configuration-css
   css: ["~/assets/styles/vuetify.styl"],

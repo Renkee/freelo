@@ -19,9 +19,7 @@ mongoose
 
 
 // Middleware
-if(process.env.NODE_ENV !== 'production') {
-	app.use(cors());
-}
+
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -40,7 +38,11 @@ app.use(session({
 	saveUninitialized: false,
 	secret: process.env.COOKIE_SECRET
 }))
-app.use(csrf())
+if(process.env.NODE_ENV !== 'production') {
+	app.use(cors());
+} else {
+	app.use(csrf())
+}
 
 
 // Routes
@@ -49,6 +51,9 @@ app.use("/api/auth", auth);
 
 const champions = require("./api/champions");
 app.use("/api/champions", champions);
+
+const changelog = require("./api/changelog");
+app.use("/api/changelog", changelog);
 
 // export the server middleware
 module.exports = {
