@@ -15,10 +15,7 @@
 			"
 		>
 			<transition name="fade">
-				<div
-					v-if="loggedIn && hovered.includes(champion.name)"
-					style="position: absolute; top: 0; left: 0; z-index: 10000"
-				>
+				<div v-if="loggedIn && hovered.includes(champion.name)" style="position: absolute; top: 0; left: 0; z-index: 1">
 					<v-btn round color="error" small @click.stop="enableRemoveModal(champion)">Remove</v-btn>
 				</div>
 			</transition>

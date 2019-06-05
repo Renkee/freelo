@@ -66,7 +66,7 @@ let settings = {
   manifest: {
 		name: "Freelo",
 		short_name: "Freelo",
-		theme_color: "#468bb6",
+		theme_color: "#0A2342",
 		background_color: "#FAFAFA",
 		display: "standalone",
 		scope: "/",
