@@ -19,6 +19,10 @@ module.exports = {
 	rules: {
 		'no-param-reassign': 'off',
 		'import/no-extraneous-dependencies': 'off',
-		'prettier/prettier': 'error'
+		'prettier/prettier': 'error',
+		'vue/html-closing-bracket-newline': ['off', {
+			"singleline": "never",
+			"multiline": "never"
+		}]
 	}
 }

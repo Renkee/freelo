@@ -52,6 +52,9 @@ app.use("/api/auth", auth);
 const champions = require("./api/champions");
 app.use("/api/champions", champions);
 
+const posts = require("./api/posts");
+app.use("/api/posts", posts);
+
 const changelog = require("./api/changelog");
 app.use("/api/changelog", changelog);
 

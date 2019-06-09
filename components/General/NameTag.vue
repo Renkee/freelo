@@ -3,7 +3,7 @@
 		class="champion-tag"
 		disabled
 		small
-		:color="type === 'champion' ? 'deep-orange' : type === 'item' ? 'blue darken-3' : 'pink'"
+		:color="type === 'champion' ? 'deep-orange' : type === 'item' ? 'blue darken-3' : 'red'"
 	>
 		<a rel="noopener" title="Wiki page" :href="'https://leagueoflegends.fandom.com/wiki/' + name" target="_blank">
 			<v-avatar><img alt="" :src="imageLink"/></v-avatar>

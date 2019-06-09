@@ -1,6 +1,7 @@
 /* eslint-disable */
 export const actions = {
 	async nuxtServerInit({ commit, dispatch}, {req}) {
+
 		if(req.csrfToken) {
 			commit('csrf/setToken', req.csrfToken())
 		}
@@ -13,7 +14,9 @@ export const actions = {
 		await dispatch('api/getCurrentPatch') // League API patch number
 		await dispatch('champions/getInfoFromDB')
 		await dispatch('champions/processDataFromDBAndApi') // Combine DB data with Riot API data
+		await dispatch('posts/getDataFromDB')
 		await dispatch('items/getFromRiotGamesAPI')
+		await dispatch('runes/getFromRiotGamesAPI')
 		await dispatch('changelog/getDataFromDB')
 	},
 	async nuxtClientInit({ dispatch }) {

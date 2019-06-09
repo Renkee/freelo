@@ -113,10 +113,16 @@ export default {
 			drawerFilter: false,
 			guides: [
 				{
-					title: 'Champions',
-					to: '/guides/champions',
+					title: 'General',
+					to: '/guides/general',
 					icon: 'fas fa-asterisk',
 					paddingR: '3px'
+				},
+				{
+					title: 'Champions',
+					to: '/guides/champions',
+					icon: 'fas fa-eye',
+					paddingR: '2px'
 				},
 				{
 					title: 'Runes',

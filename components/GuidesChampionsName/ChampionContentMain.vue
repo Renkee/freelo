@@ -60,6 +60,7 @@
 							</v-card-title>
 							<v-card-text
 								><VueMarkdown
+									style="font-size: 1.1rem"
 									:source="
 										contentTexts.find(el => {
 											return el.id === content.id
@@ -129,6 +130,7 @@
 							<v-card-text
 								><VueMarkdown
 									:ref="'content-text-preview-id-' + content.id"
+									style="font-size: 1.1rem"
 									:source="
 										contentTexts.find(el => {
 											return el.id === content.id
@@ -157,6 +159,7 @@
 				<v-card-text>
 					<VueMarkdown
 						:ref="'content-text-id-' + content.id"
+						style="font-size: 1.1rem"
 						:source="
 							contentTexts.find(el => {
 								return el.id === content.id
@@ -209,16 +212,14 @@
 import VueMarkdown from 'vue-markdown'
 import Vue from 'vue'
 
-import NameTag from '~/components/General/NameTag' //eslint-disable-line
 import ContentArrows from '~/components/GuidesChampionsName/ContentArrows'
 import AddFab from '~/components/General/AddFab'
 
-import TrieSearch from 'trie-search'
+import NametagSearch from '~/utils/nametagSearch.js'
 
 export default {
 	components: {
 		ContentArrows,
-        NameTag, //eslint-disable-line
 		VueMarkdown,
 		AddFab
 	},
@@ -237,9 +238,8 @@ export default {
 			deletedSnackbar: false,
 			deleteDialogs: [],
 			fabToggle: false,
-			nameTagsEnabled: false,
 			contentTexts: [],
-			nameTagSearch: new TrieSearch('name', { ignoreCase: false, splitOnRegEx: false })
+			nametagSearch: new NametagSearch(this.$store)
 		}
 	},
 	computed: {
@@ -248,15 +248,6 @@ export default {
 		},
 		contentCreated() {
 			return this.$store.getters['championguides/getContentCreated']
-		},
-		allChampions() {
-			return this.$store.getters['champions/getAll']
-		},
-		lolItems() {
-			return this.$store.getters['items/get']
-		},
-		allNameTagPossibilites() {
-			return this.allChampions.concat(this.lolItems)
 		},
 		csrfToken() {
 			return this.$store.getters['csrf/getToken']
@@ -270,12 +261,11 @@ export default {
 		this.champion.contents.forEach(content => {
 			this.contentTexts.push({ id: content.id, text: content.text })
 		})
-		this.nameTagSearch.addAll(this.allNameTagPossibilites)
 	},
 	mounted() {
-		this.nameTagsEnabled = true // Need to do this because .outerHTML is only available after mounting
+		this.nametagSearch.enableNametags() // Need to do this because .outerHTML is only available after mounting
 		this.contentTexts.forEach((obj, index) => {
-			Vue.set(this.contentTexts[index], 'text', this.replaceWithNameTags(this.contentTexts[index].text))
+			Vue.set(this.contentTexts[index], 'text', this.nametagSearch.replaceWithNameTags(this.contentTexts[index].text))
 		})
 	},
 	beforeDestroy() {
@@ -292,9 +282,6 @@ export default {
 		this.$store.commit('championguides/setContentCreated', [])
 	},
 	methods: {
-		isUpperCase(str) {
-			return str === str.toUpperCase() && str !== str.toLowerCase()
-		},
 		getSpanOfContentByID(contentID) {
 			const isInContentEdited = this.arrayContainsObjectWithID(this.contentEdited, contentID)
 			const isInContentCreated = this.arrayContainsObjectWithID(this.contentCreated, contentID)
@@ -321,7 +308,7 @@ export default {
 				// Move temporary content state (while editing) to the one used by everything else
 				this.updateContentTextByID(
 					contentID,
-					this.replaceWithNameTags(
+					this.nametagSearch.replaceWithNameTags(
 						this.contentEdited.find(el => {
 							return el.id === contentID
 						}).stateWhileEdit.text
@@ -334,7 +321,7 @@ export default {
 				// Move temporary content state (while editing) to the one used by everything else
 				this.updateContentTextByID(
 					contentID,
-					this.replaceWithNameTags(
+					this.nametagSearch.replaceWithNameTags(
 						this.contentCreated.find(el => {
 							return el.id === contentID
 						}).stateWhileEdit.text
@@ -375,7 +362,7 @@ export default {
 			}).stateBeforeEdit
 
 			this.updateContent(contentID, stateBeforeEdit)
-			this.updateContentTextByID(contentID, this.replaceWithNameTags(stateBeforeEdit.text))
+			this.updateContentTextByID(contentID, this.nametagSearch.replaceWithNameTags(stateBeforeEdit.text))
 
 			this.$store.commit('championguides/removeItemByIdFromContentEdited', contentID)
 		},
@@ -385,7 +372,7 @@ export default {
 			}).stateWhileEdit
 
 			this.updateContent(id, { ...stateWhileEdit, span })
-			this.updateContentTextByID(id, this.replaceWithNameTags(stateWhileEdit.text))
+			this.updateContentTextByID(id, this.nametagSearch.replaceWithNameTags(stateWhileEdit.text))
 
 			this.$store.dispatch('champions/updateContentInDB', {
 				championID: this.champion.mongo_id,
@@ -426,7 +413,7 @@ export default {
 			})
 
 			this.updateContent(id, { ...stateWhileEdit, span })
-			this.updateContentTextByID(id, this.replaceWithNameTags(stateWhileEdit.text))
+			this.updateContentTextByID(id, this.nametagSearch.replaceWithNameTags(stateWhileEdit.text))
 
 			this.$store.commit('championguides/removeItemByIdFromContentCreated', id)
 		},
@@ -461,114 +448,6 @@ export default {
 				return obj.id === id
 			})
 			return { status: content !== undefined, content }
-		},
-		findPatternsInTextForNameTags(text) {
-			let i = 0
-			let nameFound = false
-			let name = ''
-			let maybeNameParsed = {}
-			const namesParsed = []
-
-			while (i < text.length) {
-				if (nameFound === false && this.isUpperCase(text[i]) && this.nameTagSearch.get(text[i]).length > 0) {
-					name += text[i]
-					nameFound = true
-					maybeNameParsed = { startingPoint: i }
-					i++
-				} else if (nameFound === true) {
-					// If there's already a name:
-					// 1. Check if there's only one champion found with name after adding the new character to it
-					// 2a. If there's no champion after adding it, delete everything and reset to start+1
-					// 2b. If there's only one champion but the names aren't exactly matching then continue
-					// 2c. If there's only one champion and the name's are matching then save the starting and ending point and continue after the ending point
-					name += text[i]
-
-					const search = this.nameTagSearch.get(name)
-					if (search.length === 0) {
-						name = ''
-						nameFound = false
-						i = maybeNameParsed.startingPoint + 1
-					} else if (search.length > 0) {
-						if (name === search[0].name) {
-							namesParsed.push({ name, startingPoint: maybeNameParsed.startingPoint, endingPoint: i })
-							name = ''
-							nameFound = false
-						}
-						i++
-					}
-				} else {
-					i++
-				}
-			}
-			return namesParsed
-		},
-		replaceNameTagPosition(text, namesParsed) {
-			namesParsed.reverse().forEach(({ name, startingPoint, endingPoint }) => {
-				text = text
-					.split('')
-					.filter((char, index) => {
-						return index < startingPoint || index > endingPoint
-					})
-					.join('')
-
-				const currentPatch = this.$store.getters['api/getPatch']
-				const maybeItem = this.nameTagSearch.get(name)
-				let element = null
-				const ComponentClass = Vue.extend(NameTag)
-				let instance = null
-
-				if (maybeItem !== undefined && maybeItem[0].gold === undefined) {
-					// A champion
-
-					const champion = this.$store.getters['champions/getByNameOrApiName'](name)
-
-					if (champion) {
-						instance = new ComponentClass({
-							propsData: {
-								name: champion.name,
-								imageLink:
-									'https://ddragon.leagueoflegends.com/cdn/' +
-									currentPatch +
-									'/img/champion/' +
-									champion.api_name +
-									'.png',
-								type: 'champion'
-							}
-						})
-					}
-					// An item
-				} else {
-					instance = new ComponentClass({
-						propsData: {
-							name: name,
-							imageLink:
-								'https://ddragon.leagueoflegends.com/cdn/' +
-								currentPatch +
-								'/img/item/' +
-								maybeItem[0].image.full,
-							type: 'item'
-						}
-					})
-				}
-
-				instance.$mount() // pass nothing
-				element = instance.$el
-
-				const splitText = text.split('')
-				text =
-					splitText.slice(0, startingPoint).join('') +
-					element.outerHTML +
-					splitText.slice(startingPoint, splitText.length).join('')
-			})
-			return text.replace(/div/g, 'span') // have to remove block elements because markdown doesn't like them
-		},
-		replaceWithNameTags(text) {
-			if (this.nameTagsEnabled) {
-				const parsedNames = this.findPatternsInTextForNameTags(text)
-				return this.replaceNameTagPosition(text, parsedNames)
-			} else {
-				return text
-			}
 		}
 	}
 }

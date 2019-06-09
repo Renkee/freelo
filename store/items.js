@@ -11,8 +11,17 @@ export const getters = {
 export const actions = {
 	async getFromRiotGamesAPI({ commit, rootGetters }) {
 		const currentPatch = rootGetters['api/getPatch']
-		const items = await this.$axios.$get('http://ddragon.leagueoflegends.com/cdn/' + currentPatch + '/data/en_US/item.json')
-		commit('set', Object.values(items.data))
+		const { data } = await this.$axios.$get(
+			'http://ddragon.leagueoflegends.com/cdn/' + currentPatch + '/data/en_US/item.json'
+		)
+		const items = Object.values(data).map(item => {
+			return {
+				type: 'item',
+				name: item.name,
+				image: 'https://ddragon.leagueoflegends.com/cdn/' + currentPatch + '/img/item/' + item.image.full
+			}
+		})
+		commit('set', items)
 	}
 }
 

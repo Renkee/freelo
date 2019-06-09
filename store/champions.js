@@ -65,6 +65,7 @@ export const actions = {
 		for(let i = 0; i < champions.length; i++) {
 			results[i] = {
 				mongo_id: champions[i]._id,
+				type: 'champion',
 				name: championsArrayFromRiotAPI[i].name,
 				api_name: champions[i].api_name,
 				freelo: champions[i].freelo,
@@ -73,6 +74,11 @@ export const actions = {
 				contents: champions[i].contents,
 				roles: champions[i].roles,
 				power: champions[i].power,
+				square: 'https://ddragon.leagueoflegends.com/cdn/' +
+				currentPatch +
+				'/img/champion/' +
+				champions[i].api_name +
+				'.png',
 				splash: 'https://ddragon.leagueoflegends.com/cdn/img/champion/tiles/' + champions[i].api_name + '_0.jpg'
 			}
 		}
