@@ -45,15 +45,20 @@
 			<v-chip
 				v-for="tag in [post.patch, ...post.tags.slice(0, 5)]"
 				:key="tag"
-				color="primary"
-				:style="colorScheme ? 'color: #000 !important;' : 'color: #fff !important;'"
+				:color="nametagSearch.getBGOfTag(tag)"
+				:style="colorScheme && !nametagSearch.checkForTag(tag) ? 'color: #000 !important;' : 'color: #fff !important;'"
 				style="margin-right: 5px; margin-bottom: 5px; flex: initial"
 				class="test"
 				disabled
-				><v-avatar v-if="nametagSearch.checkForTag(tag)"> <img :src="nametagSearch.getImageLinkForTag(tag)" /> </v-avatar
+				><v-avatar v-if="tag && nametagSearch.checkForTag(tag)">
+					<img :src="nametagSearch.getImageLinkForTag(tag)" /> </v-avatar
 				>{{ tag }}</v-chip
 			>
-			<span v-if="post.tags.length > 5" style="font-style: italic" v-text="'and ' + (post.tags.length - 5) + ' more'" />
+			<span
+				v-if="post.tags && post.tags.length > 5"
+				style="font-style: italic"
+				v-text="'and ' + (post.tags.length - 5) + ' more'"
+			/>
 			<v-spacer></v-spacer>
 		</v-card-actions>
 	</v-card>
@@ -96,10 +101,11 @@ export default {
 		}
 	},
 	created() {
+		this.$parent.$on('postAdded', this.setPostTextToRecalculatedValue)
 		if (process.client) {
 			window.addEventListener('resize', this.calculateTagsHeight)
 		}
-		this.postText = this.postTextWithNametag()
+		this.setPostTextToRecalculatedValue()
 	},
 	destroyed() {
 		if (process.client) {
@@ -110,9 +116,12 @@ export default {
 		this.isMounted = true
 		this.calculateTagsHeight()
 		this.nametagSearch.enableNametags()
-		this.postText = this.postTextWithNametag()
+		this.setPostTextToRecalculatedValue()
 	},
 	methods: {
+		setPostTextToRecalculatedValue() {
+			this.postText = this.postTextWithNametag()
+		},
 		convertToUTCString(date) {
 			return new Date(date).toUTCString()
 		},

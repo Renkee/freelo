@@ -118,6 +118,23 @@ class NametagSearch {
 			return text
 		}
 	}
+	getBGOfTag(tag) {
+		const type = this.getTypeOfTag(tag)
+		if (type === 'champion') {
+			return 'deep-orange'
+		} else if (type === 'item') {
+			return 'blue darken-3'
+		} else if (type === 'rune') {
+			return 'red'
+		} else {
+			return 'primary'
+		}
+	}
+	getTypeOfTag(tag) {
+		const trieResult = this.trie.get(tag)
+		if (trieResult[0] === undefined || trieResult[0].name !== tag) return false
+		return trieResult[0].type
+	}
 	checkForTag(tag) {
 		const trieResult = this.trie.get(tag)
 		return trieResult[0] !== undefined && trieResult[0].name === tag

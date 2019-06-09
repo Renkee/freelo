@@ -109,6 +109,7 @@ export default {
 				const payload = { patch, ...this.addPost }
 				const postID = await this.$store.dispatch('posts/createInDB', { _csrf: this.csrfToken, ...payload })
 				await this.$store.dispatch('posts/createInLocal', { _id: postID, ...payload })
+				this.$emit('postAdded')
 				this.disableModal()
 
 				// Reset modal items

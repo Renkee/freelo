@@ -6,7 +6,7 @@
 				v-if="loggedIn && $store.getters['generalmodals/getNewPostModalState'] === false"
 				@fabClicked="$store.commit('generalmodals/setNewPostModalState', true)"
 			></AddFab>
-			<ModalAddNewPost></ModalAddNewPost>
+			<ModalAddNewPost @postAdded="$emit('postAdded')"></ModalAddNewPost>
 		</div>
 	</div>
 </template>

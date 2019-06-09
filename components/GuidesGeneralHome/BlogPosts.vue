@@ -41,6 +41,11 @@ export default {
 			return this.$store.getters['colorscheme/get']
 		}
 	},
+	created() {
+		this.$parent.$on('postAdded', () => {
+			this.$emit('postAdded')
+		})
+	},
 	mounted() {
 		this.nametagSearch.enableNametags()
 	},

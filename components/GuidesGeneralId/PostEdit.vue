@@ -111,11 +111,15 @@
 						<v-chip
 							v-for="tag in [post.patch, ...editedPost.tags]"
 							:key="tag"
-							color="primary"
-							:style="colorScheme ? 'color: #000 !important;' : 'color: #fff !important;'"
+							:color="nametagSearch.getBGOfTag(tag)"
+							:style="
+								colorScheme && !nametagSearch.checkForTag(tag)
+									? 'color: #000 !important;'
+									: 'color: #fff !important;'
+							"
 							style="margin-right: 5px; margin-bottom: 5px; flex: initial"
 							disabled
-							><v-avatar v-if="nametagSearch.checkForTag(tag)">
+							><v-avatar v-if="tag && nametagSearch.checkForTag(tag)">
 								<img :src="nametagSearch.getImageLinkForTag(tag)" /> </v-avatar
 							>{{ tag }}</v-chip
 						>
