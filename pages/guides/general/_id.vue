@@ -41,36 +41,12 @@
 					</v-tooltip>
 				</v-card-title>
 				<v-card-text><VueMarkdown style="font-size: 1.1rem" :source="textWithNametags"></VueMarkdown></v-card-text>
-				<v-card-actions style="display: flex; flex-flow: row wrap">
-					<v-chip
-						v-if="loggedIn"
-						style="margin-right: 5px; margin-bottom: 5px; flex: initial; color: #fff !important;"
-						disabled
-						:color="postByRoute.enabled ? 'success' : 'error'"
-						><v-avatar>
-							<v-icon :size="20" :class="postByRoute.enabled ? 'success' : 'error'" class="darken-2 white--text">{{
-								postByRoute.enabled ? 'check' : 'close'
-							}}</v-icon> </v-avatar
-						>{{ postByRoute.enabled ? 'Enabled' : 'Disabled' }}</v-chip
-					>
-					<v-chip
-						v-for="tag in [postByRoute.patch, ...postByRoute.tags]"
-						:key="tag"
-						:color="nametagSearch.getBGOfTag(tag)"
-						:style="
-							colorScheme && !nametagSearch.checkForTag(tag) ? 'color: #000 !important;' : 'color: #fff !important;'
-						"
-						style="margin-right: 5px; margin-bottom: 5px; flex: initial"
-						disabled
-					>
-						<v-avatar v-if="tag && nametagSearch.checkForTag(tag)">
-							<img :src="nametagSearch.getImageLinkForTag(tag)" />
-						</v-avatar>
-						{{ tag }}
-					</v-chip>
-					<v-spacer></v-spacer>
-					<v-btn v-if="loggedIn" flat @click="isEditing = true">Edit</v-btn>
+				<v-card-actions style="width: 100%;padding-bottom: 48px">
+					<PostTags :nametag-search="nametagSearch" :post="postByRoute" :limit="0"></PostTags>
 				</v-card-actions>
+				<div v-if="loggedIn" style="position: absolute; bottom: 0; right: 0;">
+					<v-btn flat @click="isEditing = true">Edit</v-btn>
+				</div>
 			</v-card>
 		</div>
 	</div>
@@ -80,6 +56,7 @@
 import VueMarkdown from 'vue-markdown'
 import PostEdit from '~/components/GuidesGeneralId/PostEdit'
 import NametagSearch from '~/utils/nametagSearch.js'
+import PostTags from '~/components/General/Posts/PostTags'
 export default {
 	head() {
 		return {
@@ -94,7 +71,8 @@ export default {
 	},
 	components: {
 		VueMarkdown,
-		PostEdit
+		PostEdit,
+		PostTags
 	},
 	data() {
 		return {

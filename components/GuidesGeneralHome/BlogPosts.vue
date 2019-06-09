@@ -1,9 +1,10 @@
 <template>
 	<main>
-		<BlogPost id="newest-post" :nametag-search="nametagSearch" :post="posts[0]" :text-length="35" />
+		<BlogPost id="newest-post" :nametag-search="nametagSearch" :post="posts[0]" :tag-limit="4" :text-length="35" />
 		<BlogPost
 			v-for="post in posts.slice(1)"
 			:key="post._id"
+			:tag-limit="3"
 			:nametag-search="nametagSearch"
 			class="other-posts"
 			:post="post"

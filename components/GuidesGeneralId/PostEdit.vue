@@ -51,6 +51,7 @@
 										hide-selected
 										label="Tags"
 										multiple
+										deletable-chips
 										chips
 									>
 									</v-combobox>
@@ -94,35 +95,8 @@
 					<v-card-text
 						><VueMarkdown style="font-size: 1.1rem" :source="editedTextWithNametag"></VueMarkdown
 					></v-card-text>
-					<v-card-actions style="display: flex; flex-flow: row wrap">
-						<v-chip
-							style="margin-right: 5px; margin-bottom: 5px; flex: initial; color: #fff !important;"
-							disabled
-							:color="editedPost.enabled ? 'success' : 'error'"
-							><v-avatar>
-								<v-icon
-									:size="20"
-									:class="editedPost.enabled ? 'success' : 'error'"
-									class="darken-2 white--text"
-									>{{ editedPost.enabled ? 'check' : 'close' }}</v-icon
-								> </v-avatar
-							>{{ editedPost.enabled ? 'Enabled' : 'Disabled' }}</v-chip
-						>
-						<v-chip
-							v-for="tag in [post.patch, ...editedPost.tags]"
-							:key="tag"
-							:color="nametagSearch.getBGOfTag(tag)"
-							:style="
-								colorScheme && !nametagSearch.checkForTag(tag)
-									? 'color: #000 !important;'
-									: 'color: #fff !important;'
-							"
-							style="margin-right: 5px; margin-bottom: 5px; flex: initial"
-							disabled
-							><v-avatar v-if="tag && nametagSearch.checkForTag(tag)">
-								<img :src="nametagSearch.getImageLinkForTag(tag)" /> </v-avatar
-							>{{ tag }}</v-chip
-						>
+					<v-card-actions>
+						<PostTags :nametag-search="nametagSearch" :post="post" :limit="0"></PostTags>
 					</v-card-actions>
 				</v-card>
 			</v-tab-item>
@@ -134,10 +108,12 @@
 import VueMarkdown from 'vue-markdown'
 import NametagSearch from '~/utils/nametagSearch.js'
 import ModalRemovePost from '~/components/GuidesGeneralHome/ModalRemovePost'
+import PostTags from '~/components/General/Posts/PostTags'
 export default {
 	components: {
 		ModalRemovePost,
-		VueMarkdown
+		VueMarkdown,
+		PostTags
 	},
 	props: {
 		post: {

@@ -1,6 +1,6 @@
 <template>
 	<v-card class="blog-post" style="position: relative">
-		<v-card-title>
+		<v-card-title style="margin-bottom: 7px">
 			<div style="width: 100%;">
 				<nuxt-link :to="'general/' + post._id"
 					><h1
@@ -30,46 +30,20 @@
 		<no-ssr>
 			<div id="spacer" style="width: 100%" :style="{ height: tagsHeight || '0px' }"></div>
 		</no-ssr>
-		<v-card-actions :ref="post._id" class="blog-post-tags" style="display: flex; flex-flow: row wrap">
-			<v-chip
-				v-if="loggedIn"
-				style="margin-right: 5px; margin-bottom: 5px; flex: initial; color: #fff !important;"
-				disabled
-				:color="post.enabled ? 'success' : 'error'"
-				><v-avatar>
-					<v-icon :size="20" :class="post.enabled ? 'success' : 'error'" class="darken-2 white--text">{{
-						post.enabled ? 'check' : 'close'
-					}}</v-icon> </v-avatar
-				>{{ post.enabled ? 'Enabled' : 'Disabled' }}</v-chip
-			>
-			<v-chip
-				v-for="tag in [post.patch, ...post.tags.slice(0, 5)]"
-				:key="tag"
-				:color="nametagSearch.getBGOfTag(tag)"
-				:style="colorScheme && !nametagSearch.checkForTag(tag) ? 'color: #000 !important;' : 'color: #fff !important;'"
-				style="margin-right: 5px; margin-bottom: 5px; flex: initial"
-				class="test"
-				disabled
-				><v-avatar v-if="tag && nametagSearch.checkForTag(tag)">
-					<img :src="nametagSearch.getImageLinkForTag(tag)" /> </v-avatar
-				>{{ tag }}</v-chip
-			>
-			<span
-				v-if="post.tags && post.tags.length > 5"
-				style="font-style: italic"
-				v-text="'and ' + (post.tags.length - 5) + ' more'"
-			/>
-			<v-spacer></v-spacer>
+		<v-card-actions :ref="post._id">
+			<PostTags :nametag-search="nametagSearch" :post="post" :limit="tagLimit"></PostTags>
 		</v-card-actions>
 	</v-card>
 </template>
 
 <script>
 import VueMarkdown from 'vue-markdown'
+import PostTags from '~/components/General/Posts/PostTags'
 
 export default {
 	components: {
-		VueMarkdown
+		VueMarkdown,
+		PostTags
 	},
 	props: {
 		post: {
@@ -83,6 +57,11 @@ export default {
 		nametagSearch: {
 			required: true,
 			type: Object
+		},
+		tagLimit: {
+			required: false,
+			type: Number,
+			default: 5
 		}
 	},
 	data() {
