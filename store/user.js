@@ -1,6 +1,7 @@
 export const state = () => ({
 	user: {
-		id: null
+		id: null,
+		email: null
 	}
 })
 
@@ -46,7 +47,7 @@ export const actions = {
 	async logout({ commit }, { _csrf }) {
 		try {
 			await this.$axios.$post('/api/auth/logout', { _csrf })
-			commit('set', { id: null })
+			commit('set', { id: null, email: null })
 		} catch (error) {
 			if (error.response) {
 				if (error.response.status === 401 || error.response.status === 400) {

@@ -67,7 +67,7 @@ export default {
 	data() {
 		return {
 			isMounted: false,
-			tagsHeight: '0px',
+			tagsHeight: '15px',
 			postText: ''
 		}
 	},
@@ -106,9 +106,9 @@ export default {
 		},
 		calculateTagsHeight() {
 			if (this.isMounted) {
-				this.tagsHeight = this.$refs[this.post._id].clientHeight + 'px'
+				this.tagsHeight = this.$refs[this.post._id].clientHeight + 15 + 'px'
 			} else {
-				this.tagsHeight = '0px'
+				this.tagsHeight = '15px'
 			}
 		},
 		postTextWithNametag() {

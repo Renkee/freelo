@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import ChampionContentHeader from '~/components/GuidesChampionsName/ChampionContentHeader'
-import ChampionContentMain from '~/components/GuidesChampionsName/ChampionContentMain'
+import ChampionContentHeader from '~/components/Guides/Champions/Name/ChampionContentHeader'
+import ChampionContentMain from '~/components/Guides/Champions/Name/ChampionContentMain'
 
 export default {
 	head() {

@@ -1,5 +1,5 @@
 <template>
-	<v-dialog id="changelog-modal" v-model="showModal" max-width="600">
+	<v-dialog id="changelog-modal" v-model="showModal" scrollable max-width="600">
 		<v-card>
 			<v-card-title><h1>Changelog</h1></v-card-title>
 			<v-card-text>

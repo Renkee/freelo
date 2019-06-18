@@ -212,7 +212,7 @@
 import VueMarkdown from 'vue-markdown'
 import Vue from 'vue'
 
-import ContentArrows from '~/components/GuidesChampionsName/ContentArrows'
+import ContentArrows from '~/components/Guides/Champions/Name/ContentArrows'
 import AddFab from '~/components/General/AddFab'
 
 import NametagSearch from '~/utils/nametagSearch.js'

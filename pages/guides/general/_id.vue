@@ -54,7 +54,7 @@
 
 <script>
 import VueMarkdown from 'vue-markdown'
-import PostEdit from '~/components/GuidesGeneralId/PostEdit'
+import PostEdit from '~/components/Guides/General/Id/PostEdit'
 import NametagSearch from '~/utils/nametagSearch.js'
 import PostTags from '~/components/General/Posts/PostTags'
 export default {

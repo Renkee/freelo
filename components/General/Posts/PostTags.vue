@@ -33,8 +33,9 @@
 			style="margin-right: 5px; margin-bottom: 5px; flex: initial"
 			disabled
 		>
-			<v-avatar v-if="tag && nametagSearch.checkForTag(tag)">
-				<img :src="nametagSearch.getImageLinkForTag(tag)" />
+			<v-avatar v-if="tag" class="primary darken-3" style="color: #fff !important; font-size: 14px;">
+				<img v-if="nametagSearch.checkForTag(tag)" :src="nametagSearch.getImageLinkForTag(tag)" />
+				<div v-else v-text="tag.slice(0, 1).toUpperCase()"></div>
 			</v-avatar>
 			{{ tag }}
 		</v-chip>

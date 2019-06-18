@@ -17,7 +17,7 @@ router.post('/login', async (req, res) => {
             bcrypt.compare(password, user[0].password).then((match) => {
                 if(match) {
                     req.session.userID = user[0]._id
-                    res.status(200).json({id: req.session.userID})
+                    res.status(200).json({id: req.session.userID, email})
                 } else {
                     res.status(401).json({message: 'Wrong email or password'})
                 }
@@ -57,8 +57,8 @@ router.post('/register', async (req, res) => {
     }
 })
 */
-router.post('/logout', (req, res) => {
-    req.session.userID = null
+router.post('/logout', async (req, res) => {
+    await req.session.destroy()
     res.status(200).json({message: 'Successfully logged out'})
 })
 

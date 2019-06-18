@@ -12,9 +12,9 @@
 </template>
 
 <script>
-import BlogPosts from '~/components/GuidesGeneralHome/BlogPosts'
+import BlogPosts from '~/components/Guides/General/Home/BlogPosts'
 import AddFab from '~/components/General/AddFab'
-import ModalAddNewPost from '~/components/GuidesGeneralHome/ModalAddNewPost'
+import ModalAddNewPost from '~/components/Guides/General/Home/ModalAddNewPost'
 
 export default {
 	head() {

@@ -28,13 +28,16 @@ app.use(bodyParser.json())
 app.use(cookieParser(process.env.COOKIE_SECRET))
 
 app.use(session({
-	store: new MongoStore({ mongooseConnection: mongoose.connection }),
+	store: new MongoStore({
+		mongooseConnection: mongoose.connection,
+		ttl: 1 * 60 * 60 // 1 hour
+	}),
 	cookie: {
 		httpOnly: true,
 		sameSite: 'strict',
 		secure: process.env.NODE_ENV === 'production'
 	},
-	resave: false,
+	resave: true,
 	saveUninitialized: false,
 	secret: process.env.COOKIE_SECRET
 }))

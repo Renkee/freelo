@@ -107,7 +107,7 @@
 <script>
 import VueMarkdown from 'vue-markdown'
 import NametagSearch from '~/utils/nametagSearch.js'
-import ModalRemovePost from '~/components/GuidesGeneralHome/ModalRemovePost'
+import ModalRemovePost from '~/components/Guides/General/Home/ModalRemovePost'
 import PostTags from '~/components/General/Posts/PostTags'
 export default {
 	components: {

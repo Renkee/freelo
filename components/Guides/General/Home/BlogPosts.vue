@@ -1,6 +1,14 @@
 <template>
 	<main>
-		<BlogPost id="newest-post" :nametag-search="nametagSearch" :post="posts[0]" :tag-limit="4" :text-length="35" />
+		<h1 v-if="posts.length === 0">No posts found...</h1>
+		<BlogPost
+			v-if="posts.length > 0"
+			id="newest-post"
+			:nametag-search="nametagSearch"
+			:post="posts[0]"
+			:tag-limit="4"
+			:text-length="35"
+		/>
 		<BlogPost
 			v-for="post in posts.slice(1)"
 			:key="post._id"
@@ -14,7 +22,7 @@
 </template>
 
 <script>
-import BlogPost from '~/components/GuidesGeneralHome/BlogPost'
+import BlogPost from '~/components/Guides/General/Home/BlogPost'
 import NametagSearch from '~/utils/nametagSearch.js'
 export default {
 	components: {
@@ -31,12 +39,17 @@ export default {
 			return this.$store.getters['user/get'].id !== null
 		},
 		posts() {
-			const posts = this.$store.getters['posts/get'].slice().reverse()
-			return this.loggedIn
-				? posts
-				: posts.filter(post => {
-						return post.enabled === true
-				  })
+			let posts = this.$store.getters['posts/get'].slice().reverse()
+			if (!this.loggedIn) {
+				posts = posts.filter(post => {
+					return post.enabled === true
+				})
+			}
+			const filterTags = this.$store.getters['filters/getGeneralFiltersTags']
+			if (filterTags && filterTags.length > 0) {
+				posts = this.filterPostsBasedOnTags(posts, filterTags)
+			}
+			return posts
 		},
 		colorScheme() {
 			return this.$store.getters['colorscheme/get']
@@ -53,6 +66,19 @@ export default {
 	methods: {
 		convertToUTCString(date) {
 			return new Date(date).toUTCString()
+		},
+		filterPostsBasedOnTags(posts, filters) {
+			for (let i = 0; i < posts.length; i++) {
+				for (let j = 0; j < filters.length; j++) {
+					if (!posts[i].tags.includes(filters[j])) {
+						// Remove post and go back one index in loop so that we don't skip the next post
+						posts.splice(i, 1)
+						i--
+						break
+					}
+				}
+			}
+			return posts
 		}
 	}
 }

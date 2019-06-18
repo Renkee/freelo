@@ -1,5 +1,6 @@
 <template>
 	<div id="champ-container">
+		<h1 v-if="filteredChampions.length === 0">No champions found...</h1>
 		<ChampionCards :logged-in="loggedIn" :champions="filteredChampions"></ChampionCards>
 		<ModalChangelog></ModalChangelog>
 		<div v-if="loggedIn">
@@ -14,11 +15,11 @@
 </template>
 
 <script>
-import ChampionCards from '~/components/GuidesChampionsHome/ChampionCards'
+import ChampionCards from '~/components/Guides/Champions/Home/ChampionCards'
 import AddFab from '~/components/General/AddFab'
 import ModalChangelog from '~/components/General/ModalChangelog'
-import ModalAddNewChampion from '~/components/GuidesChampionsHome/ModalAddNewChampion'
-import ModalRemoveChampion from '~/components/GuidesChampionsHome/ModalRemoveChampion'
+import ModalAddNewChampion from '~/components/Guides/Champions/Home/ModalAddNewChampion'
+import ModalRemoveChampion from '~/components/Guides/Champions/Home/ModalRemoveChampion'
 
 export default {
 	head() {
