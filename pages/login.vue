@@ -6,10 +6,10 @@
 
 		<v-form @submit.prevent="login">
 			<v-card-text>
-				<v-alert v-if="loginError" style="margin-bottom: 15px" :value="loginError" color="error">{{
+				<v-alert v-if="loginError && !loggedIn" style="margin-bottom: 15px" :value="loginError" color="error">{{
 					loginError
 				}}</v-alert>
-				<v-alert v-if="loginSuccessful" style="margin-bottom: 15px" :value="loginSuccessful" color="success"
+				<v-alert v-if="loginSuccessful && loggedIn" style="margin-bottom: 15px" :value="loginSuccessful" color="success"
 					>Successfully logged in!</v-alert
 				>
 
@@ -18,7 +18,7 @@
 			</v-card-text>
 			<v-card-actions
 				><v-spacer></v-spacer
-				><v-btn color="primary" type="submit">
+				><v-btn color="primary" :disabled="loggedIn" type="submit">
 					Sign in
 				</v-btn></v-card-actions
 			>
@@ -39,10 +39,15 @@ export default {
 	computed: {
 		csrfToken() {
 			return this.$store.getters['csrf/getToken']
+		},
+		loggedIn() {
+			return this.$store.getters['user/get'].id !== null
 		}
 	},
 	methods: {
 		async login() {
+			if (this.loggedIn) return
+			this.loginSuccessful = null
 			try {
 				await this.$store.dispatch('user/login', {
 					email: this.formEmail,
@@ -54,7 +59,13 @@ export default {
 				this.loginError = null
 				this.loginSuccessful = true
 			} catch (e) {
-				this.loginError = e.message
+				if (e.response) {
+					this.loginError = e.response.data.message
+				} else if (e.message) {
+					this.loginError = e.message
+				} else {
+					this.loginError = 'Unkown error'
+				}
 			}
 		}
 		/* async register() {

@@ -6,6 +6,7 @@ const csrf = require('csurf')
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const helmet = require('helmet')
 const app = express();
 
 mongoose
@@ -19,6 +20,9 @@ mongoose
 
 
 // Middleware
+
+app.use(helmet())
+
 
 
 // parse application/x-www-form-urlencoded
@@ -39,7 +43,8 @@ app.use(session({
 	},
 	resave: true,
 	saveUninitialized: false,
-	secret: process.env.COOKIE_SECRET
+	secret: process.env.COOKIE_SECRET,
+	name: 'sesid'
 }))
 if(process.env.NODE_ENV !== 'production') {
 	app.use(cors());
