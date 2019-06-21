@@ -5,9 +5,10 @@ const path = require('path')
 const User = require(path.join(__dirname, "/models/User.js"))
 const router = express.Router()
 
+//const saltRounds = parseInt(process.env.BCRYPT_SALT_ROUNDS);
+
 const { RateLimiterMongo  } = require('rate-limiter-flexible');
 
-const saltRounds = parseInt(process.env.BCRYPT_SALT_ROUNDS);
 
 
 const maxWrongAttemptsByIPperDay = 100;
@@ -68,6 +69,7 @@ router.post('/login', async (req, res) => {
             if(user && user._id) {
                 if(await bcrypt.compare(password, user.password)) {
                     req.session.userID = user._id
+                    req.session.userEmail = user.email
 
                     if (resUsernameAndIP !== null && resUsernameAndIP.consumedPoints > 0) {
                         // Reset on successful authorisation

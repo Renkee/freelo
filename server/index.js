@@ -9,6 +9,12 @@ const mongoose = require("mongoose");
 const helmet = require('helmet')
 const app = express();
 
+const auth = require("./api/auth");
+const champions = require("./api/champions");
+const posts = require("./api/posts");
+const changelog = require("./api/changelog");
+
+
 mongoose
 	.connect(process.env.MONGO_URL, {
 		useNewUrlParser: true
@@ -54,16 +60,9 @@ if(process.env.NODE_ENV !== 'production') {
 
 
 // Routes
-const auth = require("./api/auth");
 app.use("/api/auth", auth);
-
-const champions = require("./api/champions");
 app.use("/api/champions", champions);
-
-const posts = require("./api/posts");
 app.use("/api/posts", posts);
-
-const changelog = require("./api/changelog");
 app.use("/api/changelog", changelog);
 
 // export the server middleware

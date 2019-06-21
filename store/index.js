@@ -6,8 +6,8 @@ export const actions = {
 			commit('csrf/setToken', req.csrfToken())
 		}
 
-		if (req.session && req.session.userID) {
-			commit('user/set', { id: req.session.userID })
+		if (req.session && req.session.userID && req.session.userEmail) {
+			commit('user/set', { id: req.session.userID, email: req.session.userEmail })
 		}
 
 		// Get and construct required information for website

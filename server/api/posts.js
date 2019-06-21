@@ -16,16 +16,16 @@ router.get('/', async (req, res) => {
 })
 
 // Create post
-router.put('/', (req,res) => {
+router.put('/', isAuthenticated, (req,res) => {
 	const {title, text, patch, tags, enabled} = req.body;
 
 	try {
 		if(title && text && patch && tags) {
 			const post = new Post({title, text, patch, tags, enabled: enabled || false})
 			post.save()
-			res.status(200).json({message: 'Request successfully fulfilled', postID: post._id})
+			res.status(201).json({message: 'Post successfully created', postID: post._id})
 		} else {
-			res.status(400).json({message: 'No title / text / patch / tags given in request body'})
+			res.status(400).json({message: 'Invalid arguments'})
 		}
 	} catch(err) {
 		res.status(500).json({message: err})
@@ -33,28 +33,28 @@ router.put('/', (req,res) => {
 })
 
 // Update post
-router.patch('/:postID', async (req, res) => {
+router.patch('/:postID', isAuthenticated, async (req, res) => {
 	try {
 		let post = await Post.findById(req.params.postID)
+		const validProperties = ['title', 'text', 'patch', 'tags', 'enabled'];
 
-		let properties = Object.keys(req.body)
-		properties.forEach((property) => {
-			if(['title', 'text', 'patch', 'tags', 'enabled'].includes(property)) {
+		Object.keys(req.body).forEach((property) => {
+			if(validProperties.includes(property)) {
 				post[property] = req.body[property]
 			}
 		})
 		await post.save()
-		res.status(200).json({message: 'Request successfully fulfilled'})
+		res.status(200).json({message: 'Post successfully changed'})
 	} catch(err) {
 		res.status(500).json({message: err})
 	}
 })
 
 // Delete post
-router.delete('/:postID', async (req, res) => {
+router.delete('/:postID', isAuthenticated, async (req, res) => {
 	try {
 		await Post.deleteOne({_id: req.params.postID})
-		res.status(200).json({message: 'Request successfully fulfilled'})
+		res.status(200).json({message: 'Post successfully deleted'})
 	} catch(err) {
 		res.status(500).json({message: err})
 	}

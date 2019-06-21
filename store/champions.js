@@ -47,8 +47,8 @@ export const getters = {
 
 export const actions = {
 	async getInfoFromDB({ commit }) {
-		const champions = await this.$axios.$get('api/champions')
-		commit('setInfoFromDB', champions)
+		const response = await this.$axios.$get('api/champions')
+		commit('setInfoFromDB', response.champions)
 	},
 	async processDataFromDBAndApi({ commit, rootGetters }) {
 		let champions = rootGetters['champions/getInfoFromServer']

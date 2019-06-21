@@ -24,7 +24,7 @@ export const getters = {
 
 export const actions = {
 	async addNewChange(context, { subject, changed_element, action, _csrf }) {
-		await this.$axios.$post('api/changelog', {
+		await this.$axios.$put('api/changelog', {
 			_csrf,
 			subject,
 			changed_element,
