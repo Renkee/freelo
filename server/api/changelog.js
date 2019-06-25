@@ -1,7 +1,8 @@
 const express = require('express')
 const path = require('path')
-const {isAuthenticated} = require(path.join(__dirname, "/helpers.js"))
+const {isAuthenticated, genLogMessage} = require(path.join(__dirname, "/helpers.js"))
 const Changelog = require(path.join(__dirname, "/models/Changelog.js"))
+const winston = require('winston')
 
 const router = express.Router()
 
@@ -13,7 +14,7 @@ router.get('/', async (req, res) => {
 		res.status(200).json({changes})
 	}
 	catch(err) {
-		console.log(err)
+		winston.error(genLogMessage('/api/changelog', req, {error: err}))
 		res.status(500).json(err)
 	}
 
@@ -31,11 +32,21 @@ router.put('/', isAuthenticated, (req, res) => {
 			missingProperties.push(property)
 		}
 	})
-	if(! missingProperties.length > 0) {
-		new Changelog(changelogObject).save()
-		res.status(201).json({message: 'Successfully added change'})
-	} else {
-		res.status(400).json({message: 'Missing arguments', missingArguments: missingProperties})
+	try {
+		if(! missingProperties.length > 0) {
+			new Changelog(changelogObject).save()
+
+			const message = 'Successfully added change'
+			winston.info(genLogMessage('/api/posts', req, {message, changelog: changelogObject}))
+			res.status(201).json({message})
+		} else {
+			const error = 'Missing arguments'
+			winston.warn(genLogMessage('/api/posts', req, {error, missingArguments: missingProperties}))
+			res.status(400).json({message: error, missingArguments: missingProperties})
+		}
+	} catch(err) {
+		winston.error(genLogMessage('/api/changelog', req, {error: err}))
+		res.status(500).json(err)
 	}
 })
 

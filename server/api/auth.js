@@ -3,6 +3,9 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const path = require('path')
 const User = require(path.join(__dirname, "/models/User.js"))
+const {genLogMessage} = require(path.join(__dirname, "/helpers.js"))
+const winston = require('winston')
+
 const router = express.Router()
 
 //const saltRounds = parseInt(process.env.BCRYPT_SALT_ROUNDS);
@@ -59,6 +62,7 @@ router.post('/login', async (req, res) => {
     }
 
     if (retrySecs > 0) {
+        winston.warn(genLogMessage('/api/auth', req, {message: 'Too many requests', retrySecs}))
         return res.status(429).json({message: `Too many requests, try again after ${retrySecs} seconds`});
     }
 
@@ -76,29 +80,32 @@ router.post('/login', async (req, res) => {
                         await limiterConsecutiveFailsByUsernameAndIP.delete(usernameIPkey);
                     }
 
+                    winston.info(genLogMessage('/api/auth', req, {message: 'User successfully logged in'}))
                     res.status(200).json({id: req.session.userID, email})
                 } else {
 
                     await limiterSlowBruteByIP.consume(ipAddr)
                     await limiterConsecutiveFailsByUsernameAndIP.consume(usernameIPkey)
+                    winston.warn(genLogMessage('/api/auth', req, {message: 'Wrong password', remainingTriesForResponse}))
                     res.status(401).json({message: `Wrong email or password, remaining tries: ${remainingTriesForResponse}`}) // Wrong password
                 }
             } else {
 
                 await limiterSlowBruteByIP.consume(ipAddr)
                 await limiterConsecutiveFailsByUsernameAndIP.consume(usernameIPkey)
-                res.status(401).json({ message: `Wrong email or password, remaining tries: ${remainingTriesForResponse}` }) // Wrong username
+                winston.warn(genLogMessage('/api/auth', req, {message: 'Wrong email', remainingTriesForResponse}))
+                res.status(401).json({ message: `Wrong email or password, remaining tries: ${remainingTriesForResponse}` }) // Wrong email
             }
         } catch(err) {
-
-            console.log(err)
+			winston.error(genLogMessage('/api/auth', req, {error: err}))
             res.status(500).json({message: 'Internal server error'})
         }
     } else {
-
         await limiterSlowBruteByIP.consume(ipAddr)
         await limiterConsecutiveFailsByUsernameAndIP.consume(usernameIPkey)
-        res.status(400).json({message: 'No email or password given'})
+        const message = 'No email or password given'
+        winston.warn(genLogMessage('/api/auth', req, {message}))
+        res.status(400).json({message})
     }
 })
 /*

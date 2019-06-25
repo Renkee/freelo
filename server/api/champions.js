@@ -1,7 +1,8 @@
 const express = require('express')
 const path = require('path')
-const {isAuthenticated} = require(path.join(__dirname, "/helpers.js"))
+const {isAuthenticated, genLogMessage} = require(path.join(__dirname, "/helpers.js"))
 const Champion = require(path.join(__dirname, "/models/Champion.js"))
+const winston = require('winston')
 
 const router = express.Router()
 
@@ -27,6 +28,7 @@ router.get('/', async (req, res) => {
 			res.status(200).json({champions: await Champion.find({}).sort({ name: 1 })})
 		}
 	} catch(err) {
+		winston.error(genLogMessage('/api/champions', req, {error: err}))
 		res.status(500).json({message: err})
 	}
 })
@@ -36,20 +38,27 @@ router.put('/:_id/', isAuthenticated, async (req, res) => {
 	if(req.body.content) {
 		try {
 			let champion = await Champion.findById(req.params._id)
-			champion.contents.push({
+			const newContent = {
 				id: parseInt(req.body.content.contentID),
 				title: req.body.content.title,
 				text: req.body.content.text,
 				span: 2
-			})
+			}
+			champion.contents.push(newContent)
 			champion.markModified('contents')
 			champion.save()
-			res.status(201).json({message: 'Successfully added new content with ID: ' + req.body.contentID})
+
+			const payload = {message: 'Successfully added new content', newContent}
+			winston.info(genLogMessage('/api/champions', req, payload))
+			res.status(201).json(payload)
 		} catch (err) {
+			winston.error(genLogMessage('/api/champions', req, {error: err}))
 			res.status(500).json({message: err})
 		}
 	} else {
-		res.status(400).json({message: 'No content information in request'})
+		const message = 'No content information in request'
+		winston.warn(genLogMessage('/api/champions', req, {message}))
+		res.status(400).json({message})
 	}
 
 })
@@ -75,18 +84,27 @@ router.patch('/:_id/:contentID', isAuthenticated, async (req, res) => {
 				if(invalidProperties.length < properties.length) { // If any content was changed
 					champion.markModified('contents')
 					await champion.save()
-					res.status(200).json({message: 'Content successfully changed!', content: contentToChange})
+					const payload = {message: 'Content successfully changed!', content: contentToChange}
+					winston.info(genLogMessage('/api/champions', req, payload))
+					res.status(200).json(payload)
 				} else {
-					res.status(400).json({message: 'No valid argument found', invalidArguments: invalidProperties})
+					const payload = {message: 'No valid argument found', invalidArguments: invalidProperties}
+					winston.warn(genLogMessage('/api/champions', req, payload))
+					res.status(400).json(payload)
 				}
 			} else {
-				res.status(400).json({message: 'Invalid content ID'})
+				const message = 'Invalid content ID'
+				winston.warn(genLogMessage('/api/champions', req, {message}))
+				res.status(400).json({message})
 			}
 		} catch (err) {
+			winston.error(genLogMessage('/api/champions', req, {error: err}))
 			res.status(500).json({message: err})
 		}
 	} else {
-		res.status(400).json({message: 'No content in request body!'})
+		const message = 'No content in request body!'
+		winston.warn(genLogMessage('/api/champions', req, {message}))
+		res.status(400).json({message})
 	}
 })
 
@@ -99,12 +117,18 @@ router.delete('/:_id', isAuthenticated, async (req, res) => {
 			champion.contents = champion.contents.filter((content) => {return parseInt(content.id) !== parseInt(req.body.contentID)})
 			champion.markModified('contents')
 			await champion.save()
-			res.status(200).json({message: 'Content successfully deleted in ' + champion.api_name + ' with ID: ' + req.body.contentID})
+
+			const payload = {message: 'Content successfully deleted!', championID: champion._id, contentID: req.body.contentID}
+			winston.info(genLogMessage('/api/champions', req, payload))
+			res.status(200).json(payload)
 		} catch (err) {
+			winston.error(genLogMessage('/api/champions', req, {error: err}))
 			res.status(500).json({message: err})
 		}
 	} else {
-		res.status(400).json({message: 'Invalid content ID'})
+		const message = 'Invalid content ID'
+		winston.warn(genLogMessage('/api/champions', req, {message}))
+		res.status(400).json({message})
 	}
 })
 
@@ -167,12 +191,17 @@ router.patch('/:_id', isAuthenticated, async (req, res) => {
 			}
 
 			await champion.save()
-			response['msg'] = 'Request fulfilled'
+			response['message'] = 'Request fulfilled'
+
+			winston.info(genLogMessage('/api/champions', req, {message: response}))
 			res.status(200).json({message: response})
 		} else {
-			res.status(400).json({ message: 'Invalid arguments' })
+			const message = 'Invalid arguments'
+			winston.warn(genLogMessage('/api/champions', req, {message}))
+			res.status(400).json({ message })
 		}
 	} catch (err) {
+		winston.error(genLogMessage('/api/champions', req, {error: err}))
 		res.status(500).json({message: err})
 	}
 })

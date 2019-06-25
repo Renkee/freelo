@@ -1,16 +1,16 @@
 const express = require('express')
 const path = require('path')
-const {isAuthenticated} = require(path.join(__dirname, "/helpers.js"))
+const {isAuthenticated, genLogMessage} = require(path.join(__dirname, "/helpers.js"))
 const Post = require(path.join(__dirname, "/models/Post.js"))
-
+const winston = require('winston')
 const router = express.Router()
-
 
 // Get posts
 router.get('/', async (req, res) => {
 	try {
 		res.status(200).json(await Post.find())
 	} catch(err) {
+		winston.error(genLogMessage('/api/posts', req, {error: err}))
 		res.status(500).json({message: err})
 	}
 })
@@ -23,11 +23,17 @@ router.put('/', isAuthenticated, (req,res) => {
 		if(title && text && patch && tags) {
 			const post = new Post({title, text, patch, tags, enabled: enabled || false})
 			post.save()
-			res.status(201).json({message: 'Post successfully created', postID: post._id})
+
+			const message = 'Post successfully created'
+			winston.info(genLogMessage('/api/posts', req, {message, post}))
+			res.status(201).json({message, postID: post._id})
 		} else {
-			res.status(400).json({message: 'Invalid arguments'})
+			let error = 'Invalid arguments'
+			winston.warn(genLogMessage('/api/posts', req, {error, arguments: req.body}))
+			res.status(400).json({message: error})
 		}
 	} catch(err) {
+		winston.error(genLogMessage('/api/posts', req, {error: err}))
 		res.status(500).json({message: err})
 	}
 })
@@ -44,8 +50,12 @@ router.patch('/:postID', isAuthenticated, async (req, res) => {
 			}
 		})
 		await post.save()
-		res.status(200).json({message: 'Post successfully changed'})
+
+		const message = 'Post successfully changed'
+		winston.info(genLogMessage('/api/posts', req, {message, post}))
+		res.status(200).json({message})
 	} catch(err) {
+		winston.error(genLogMessage('/api/posts', req, {error: err}))
 		res.status(500).json({message: err})
 	}
 })
@@ -54,8 +64,12 @@ router.patch('/:postID', isAuthenticated, async (req, res) => {
 router.delete('/:postID', isAuthenticated, async (req, res) => {
 	try {
 		await Post.deleteOne({_id: req.params.postID})
-		res.status(200).json({message: 'Post successfully deleted'})
+
+		const message = 'Post successfully deleted'
+		winston.info(genLogMessage('/api/posts', req, {message, postID: req.params.postID}))
+		res.status(200).json({message})
 	} catch(err) {
+		winston.error(genLogMessage('/api/posts', req, {error: err}))
 		res.status(500).json({message: err})
 	}
 })
