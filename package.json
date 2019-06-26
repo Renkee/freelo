@@ -15,9 +15,7 @@
 	},
 	"scripts": {
 		"build": "nuxt build",
-		"coverage": "codecov",
 		"dev": "nuxt",
-		"generate": "nuxt generate",
 		"start": "nuxt start"
 	},
 	"dependencies": {
