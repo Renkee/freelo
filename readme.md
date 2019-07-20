@@ -1,5 +1,5 @@
 # Freelo
 
-Live example currently not available.
+[Live example](https://freelo.renkee.eu)
 
 Built upon [nuxt-pwa-vuetify-starter](https://github.com/jefrydco/nuxt-pwa-vuetify-starter)
